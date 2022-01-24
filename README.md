@@ -1,2 +1,2 @@
 # JAVA_RPGTALE
-New RPG!
+New RPG-7!
