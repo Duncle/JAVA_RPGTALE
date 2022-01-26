@@ -1,0 +1,40 @@
+[1mdiff --cc src/Game/Stuffs/Stuff.java[m
+[1mindex bf4a439,17e9217..0000000[m
+[1m--- a/src/Game/Stuffs/Stuff.java[m
+[1m+++ b/src/Game/Stuffs/Stuff.java[m
+[36m@@@ -11,4 -11,12 +11,15 @@@[m [mpublic class Stuff [m
+      public void setId(int id) {[m
+          this.id = id;[m
+      }[m
+[32m++<<<<<<< HEAD[m
+[32m++=======[m
+[32m+ [m
+[32m+     public int getPrice() {[m
+[32m+         return price;[m
+[32m+     }[m
+[32m+ [m
+[32m+     public void setPrice(int price) {[m
+[32m+         this.price = price;[m
+[32m+     }[m
+[32m++>>>>>>> refs/remotes/origin/main[m
+  }[m
+[1mdiff --cc src/Game/Stuffs/StuffSubs/Equipments/Weapon.java[m
+[1mindex 9e9b861,b23fbd5..0000000[m
+[1m--- a/src/Game/Stuffs/StuffSubs/Equipments/Weapon.java[m
+[1m+++ b/src/Game/Stuffs/StuffSubs/Equipments/Weapon.java[m
+[36m@@@ -20,4 -20,12 +20,15 @@@[m [mpublic class Weapon extends Equipment [m
+      public void setDamage(int damage) {[m
+          this.damage = damage;[m
+      }[m
+[32m++<<<<<<< HEAD[m
+[32m++=======[m
+[32m+ [m
+[32m+     public int getStaminaRequirement() {[m
+[32m+         return staminaRequirement;[m
+[32m+     }[m
+[32m+ [m
+[32m+     public void setStaminaRequirement(int staminaRequirement) {[m
+[32m+         this.staminaRequirement = staminaRequirement;[m
+[32m+     }[m
+[32m++>>>>>>> refs/remotes/origin/main[m
+  }[m

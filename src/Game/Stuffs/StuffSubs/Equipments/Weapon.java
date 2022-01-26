@@ -20,4 +20,12 @@ public class Weapon extends Equipment {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+
+    public int getStaminaRequirement() {
+        return staminaRequirement;
+    }
+
+    public void setStaminaRequirement(int staminaRequirement) {
+        this.staminaRequirement = staminaRequirement;
+    }
 }
