@@ -10,4 +10,12 @@ public class Equipment extends Stuff {
     public void toBreak(int durability) {
 
     }
+
+    public int getDurability() {
+        return durability;
+    }
+
+    public void setDurability(int durability) {
+        this.durability = durability;
+    }
 }

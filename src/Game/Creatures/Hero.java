@@ -1,5 +1,7 @@
 package Game.Creatures;
 
+import Game.Stuffs.StuffSubs.Equipments.Weapon;
+
 public class Hero {
 
     private int hitPoints;
@@ -8,14 +10,17 @@ public class Hero {
     private int strength;
     private int agility;
     private int intelligence;
+    private Weapon weapon;
 
-    public Hero(int HitPoints, int ManaPoints, int StaminaPoints, int Strength, int Agility, int Intelligence) {
-        hitPoints = HitPoints;
-        manaPoints = ManaPoints;
-        staminaPoints = StaminaPoints;
-        strength = Strength;
-        agility = Agility;
-        intelligence = Intelligence;
+    public Hero(int hitPoints, int manaPoints, int staminaPoints, int strength, int agility, int intelligence, Weapon weapon) {
+        this.hitPoints = hitPoints;
+        this.manaPoints = manaPoints;
+        this.staminaPoints = staminaPoints;
+        this.strength = strength;
+        this.agility = agility;
+        this.intelligence = intelligence;
+        this.weapon = weapon;
+        
     }
 
     public int getHitPoints() {
@@ -67,6 +72,6 @@ public class Hero {
     }
 
     public void toAttack() {
-
+        this.hitPoints = this.hitPoints - this.weapon.getDamage();
     }
 }
