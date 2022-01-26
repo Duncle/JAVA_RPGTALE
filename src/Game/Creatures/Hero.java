@@ -1,50 +1,21 @@
 package Game.Creatures;
 
+import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 
-public class Hero {
-
-    private int hitPoints;
-    private int manaPoints;
-    private int staminaPoints;
+public class Hero extends Creature {
     private int strength;
     private int agility;
     private int intelligence;
-    private Weapon weapon;
 
-    public Hero(int hitPoints, int manaPoints, int staminaPoints, int strength, int agility, int intelligence, Weapon weapon) {
-        this.hitPoints = hitPoints;
-        this.manaPoints = manaPoints;
-        this.staminaPoints = staminaPoints;
+
+    public Hero(int hitPoints, int manaPoints, int staminaPoints, int intelligence, int strength, int agility, Weapon weapon, Armor armor) {
+        super(hitPoints, manaPoints, staminaPoints, weapon, armor);
         this.strength = strength;
         this.agility = agility;
         this.intelligence = intelligence;
-        this.weapon = weapon;
-        
-    }
 
-    public int getHitPoints() {
-        return hitPoints;
-    }
 
-    public void setHitPoints(int hitPoints) {
-        this.hitPoints = hitPoints;
-    }
-
-    public int getManaPoints() {
-        return manaPoints;
-    }
-
-    public void setManaPoints(int manaPoints) {
-        this.manaPoints = manaPoints;
-    }
-
-    public int getStaminaPoints() {
-        return staminaPoints;
-    }
-
-    public void setStaminaPoints(int staminaPoints) {
-        this.staminaPoints = staminaPoints;
     }
 
     public int getStrength() {
@@ -70,8 +41,7 @@ public class Hero {
     public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
     }
-
     public void toAttack() {
-        this.hitPoints = this.hitPoints - this.weapon.getDamage();
+        this.setHitPoints(this.getHitPoints()-this.getWeapon().getDamage());
     }
 }
