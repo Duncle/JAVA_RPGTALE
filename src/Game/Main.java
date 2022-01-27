@@ -12,11 +12,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         Weapon sword = new Weapon(1, 100, 10, 5, 0);
         Weapon rustySword = new Weapon(2, 50, 3, 2, 0);
+        Armor ironPlate = new Armor(1, 1000, 50, 2, "Chestplate");
 
-        Armor ironPlate = new Armor();
-        Quest quest = new Quest();
+        Quest quest = new Quest(1, "InProgress", "FirstQuest");
+
         Enemy Gnoll = new Enemy(10, 10, 10, sword, ironPlate, quest);
         Enemy Goblin = new Enemy(12, 12, 12, rustySword, ironPlate, quest);
 
