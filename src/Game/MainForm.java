@@ -11,7 +11,6 @@ public class MainForm extends JFrame {
 
     private JPanel rootPanel = new JPanel();
 
-
     public MainForm(Hero hero) {
         setSize(400, 400);
         rootPanel.setLayout(null);
