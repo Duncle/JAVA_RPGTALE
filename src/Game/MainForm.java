@@ -40,17 +40,34 @@ public class MainForm extends JFrame {
         for (int i = 0; i < description.length; i++) {
 
             if (hero.getSubLocation().getRoots()[i] != -1) {
-                for (int j = 0; j < hero.getLocation().getSubLocation().length; j++)
+                for (int j = 0; j < hero.getLocation().getSubLocation().length; j++) {
                     if (hero.getLocation().getSubLocation()[j].getId() == hero.getSubLocation().getRoots()[i]) {
                         cbModel.addElement((hero.getLocation().getSubLocation()[j].getDescription()));
                     }
+                }
             }
 
         }
+
+
         JComboBox subLocationComboBox = new JComboBox(cbModel);
 
+
+
+            subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
+                @Override
+                public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                              final boolean cellHasFocus) {
+
+                    if (index == -1) {
+                        value = "Доступно для перемещения";
+                    }
+
+                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                }
+            });
         //позиционирование и масштамирование элементов
-        labelHitPoints.setBounds(44, 44, 40, 40);
+        labelHitPoints.setBounds(44, 44, 140, 40);
         labelManaPoints.setBounds(44, 54, 40, 40);
         labelStaminaPoints.setBounds(44, 64, 40, 40);
         labelStrength.setBounds(44, 74, 40, 40);
@@ -60,6 +77,7 @@ public class MainForm extends JFrame {
         subLocationComboBox.setBounds(200, 200, 300, 100);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
+
         //добавление элементов на рут панель
         rootPanel.add(labelHitPoints);
         rootPanel.add(labelManaPoints);
@@ -69,6 +87,7 @@ public class MainForm extends JFrame {
         rootPanel.add(labelIntelligence);
         rootPanel.add(attackButton);
         rootPanel.add(subLocationComboBox);
+
         //реализация атака по нажатию кнопки плюс обновление лейбла хитпоинты
         attackButton.addActionListener(new ActionListener() {
             @Override
@@ -78,6 +97,55 @@ public class MainForm extends JFrame {
             }
         });
 
+        subLocationComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+                subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                                  final boolean cellHasFocus) {
+
+                        if (index == -1) {
+                            value = "Доступно для перемещения";
+                        }
+
+                        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    }
+                });
+
+
+                String selectedLocation = subLocationComboBox.getSelectedItem().toString();
+                for (int i = 0; i < description.length; i++) {
+                    if (subLocationComboBox.getSelectedItem().toString().equals(hero.getLocation().getSubLocation()[i].getDescription())) {
+                        labelHitPoints.setText(hero.getLocation().getSubLocation()[i].getDescription());
+                        hero.setSubLocation(hero.getLocation().getSubLocation()[i]);
+                        String[] description = new String[hero.getSubLocation().getRoots().length];
+
+                    }
+                }
+
+                cbModel.removeAllElements();
+                for (int i = 0; i < description.length; i++) {
+
+                    if (hero.getSubLocation().getRoots()[i] != -1) {
+                        for (int j = 0; j < hero.getLocation().getSubLocation().length; j++) {
+                            if (hero.getLocation().getSubLocation()[j].getId() == hero.getSubLocation().getRoots()[i]) {
+                                cbModel.addElement((hero.getLocation().getSubLocation()[j].getDescription()));
+                            }
+                        }
+                    }
+
+                }
+
+
+                JComboBox subLocationComboBox = new JComboBox(cbModel);
+            }
+        });
+
 
     }
+
 }
+

@@ -48,7 +48,7 @@ public class Hero extends Creature {
     }
 
     public void toAttack() {
-        this.setHitPoints(this.getHitPoints() - this.getWeapon().getDamage());
+        this.setHitPoints(this.getHitPoints() - this.subLocation.getEnemy().getWeapon().getDamage());
     }
 
     public Location getLocation() {
