@@ -34,7 +34,7 @@ public class MainForm extends JFrame {
         JButton forwardButton = new JButton("attack");
         JButton backButton = new JButton("attack");
 
-        //Combobox доступные локации для перемещения
+        //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
         String[] description = new String[hero.getSubLocation().getRoots().length];
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel();
         for (int i = 0; i < description.length; i++) {
@@ -49,23 +49,22 @@ public class MainForm extends JFrame {
 
         }
 
-
+//заполнение комбобокса
         JComboBox subLocationComboBox = new JComboBox(cbModel);
 
+// getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
+        subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                          final boolean cellHasFocus) {
 
-
-            subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
-                @Override
-                public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
-                                                              final boolean cellHasFocus) {
-
-                    if (index == -1) {
-                        value = "Доступно для перемещения";
-                    }
-
-                    return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index == -1) {
+                    value = "Доступно для перемещения";
                 }
-            });
+
+                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            }
+        });
         //позиционирование и масштамирование элементов
         labelHitPoints.setBounds(44, 44, 140, 40);
         labelManaPoints.setBounds(44, 54, 40, 40);
@@ -96,27 +95,16 @@ public class MainForm extends JFrame {
                 labelHitPoints.setText(String.valueOf(hero.getHitPoints()));
             }
         });
+         //реализация перехода между локациями привыборе пунктов из выпадающего
+        // меню циклом проходимся по новой путям новой локации,
+
 
         subLocationComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
 
-                subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
-                    @Override
-                    public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
-                                                                  final boolean cellHasFocus) {
-
-                        if (index == -1) {
-                            value = "Доступно для перемещения";
-                        }
-
-                        return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                    }
-                });
-
-
-                String selectedLocation = subLocationComboBox.getSelectedItem().toString();
+                //если название выбранной саблокации совпадает с названии саблокации в масиве локация.саблокация , то герой негрой на нее переходит
                 for (int i = 0; i < description.length; i++) {
                     if (subLocationComboBox.getSelectedItem().toString().equals(hero.getLocation().getSubLocation()[i].getDescription())) {
                         labelHitPoints.setText(hero.getLocation().getSubLocation()[i].getDescription());
@@ -125,8 +113,9 @@ public class MainForm extends JFrame {
 
                     }
                 }
-
+                //чистим старые пути локации
                 cbModel.removeAllElements();
+                //герой изменил местоположение, просмотр у новой локации ее путей и добавление их в комбобокс
                 for (int i = 0; i < description.length; i++) {
 
                     if (hero.getSubLocation().getRoots()[i] != -1) {
@@ -138,8 +127,7 @@ public class MainForm extends JFrame {
                     }
 
                 }
-
-
+               //заполнение комбобокса
                 JComboBox subLocationComboBox = new JComboBox(cbModel);
             }
         });
