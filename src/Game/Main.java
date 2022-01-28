@@ -13,6 +13,10 @@ public class Main {
         Hero hero = new Hero(1, 0, 0, 0, 0, 0,sword, ironPlate);
 
         MainForm form = new MainForm(hero);
+        /*
+        GUI_Test app = new GUI_Test();
+        app.setVisible(true);
+        */
 
     }
 }
