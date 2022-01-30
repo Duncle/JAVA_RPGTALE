@@ -8,9 +8,11 @@ import Game.Quests.Quest;
 import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         Weapon sword = new Weapon(1, 100, 10, 5, 0);

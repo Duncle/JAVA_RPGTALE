@@ -2,22 +2,48 @@ package Game;
 
 import Game.Creatures.Hero;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.swing.ImageIcon;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainForm extends JFrame {
 
     private JPanel rootPanel = new JPanel();
 
-    public MainForm(Hero hero) {
-        setSize(400, 400);
+    public MainForm(Hero hero) throws IOException {
+        //Определение размеров окна и позиционирование по центру экрана
+        Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setSize(ScreenSize.width, ScreenSize.height);
+        setLocationRelativeTo(null);
         rootPanel.setLayout(null);
         setContentPane(rootPanel);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        //Добавление PNG картинки
+        ImageIcon mainScreenImg = new ImageIcon("dummy.png");
+        JLabel mainScreenImgContainer = new JLabel("1");
+        mainScreenImgContainer.setText("");
+        mainScreenImgContainer.setIcon(mainScreenImg);
+        mainScreenImgContainer.setBounds(1000,100, 639, 500);
+        BasicStroke stroke = new BasicStroke(10);
+        mainScreenImgContainer.setBorder(BorderFactory.createStrokeBorder(stroke, Color.YELLOW));
+        rootPanel.add(mainScreenImgContainer);
+
+        //Event Log Interface
+        JLabel eventlogLabel = new JLabel("Event Log");
+        JLabel eventlogBody = new JLabel("В данный момент нет сообщений для отображения");
+        int eventlogArr[] = new int[10];
+
+
 
         //статы персонажа
         JLabel labelHitPoints = new JLabel(String.valueOf(hero.getHitPoints()));
