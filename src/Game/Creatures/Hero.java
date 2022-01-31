@@ -5,6 +5,7 @@ import Game.Map.SubLocation;
 import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 
+import javax.swing.*;
 import java.util.Locale;
 
 public class Hero extends Creature {
@@ -65,6 +66,39 @@ public class Hero extends Creature {
 
     public void setSubLocation(SubLocation subLocation) {
         this.subLocation = subLocation;
+    }
+
+
+    public DefaultComboBoxModel<String> avaliableSublocationtsToMove(Hero hero, DefaultComboBoxModel cbModel) {
+        //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
+        String[] description = new String[hero.getSubLocation().getRoots().length];
+
+        for (int i = 0; i < description.length; i++) {
+
+            if (hero.getSubLocation().getRoots()[i] != -1) {
+                for (int j = 0; j < hero.getLocation().getSubLocation().length; j++) {
+                    if (hero.getLocation().getSubLocation()[j].getId() == hero.getSubLocation().getRoots()[i]) {
+                        cbModel.addElement((hero.getLocation().getSubLocation()[j].getDescription()));
+                    }
+                }
+            }
+
+        }
+
+        //заполнение комбобокса
+
+        return cbModel;
+    }
+
+    public void toMove(Hero hero, JComboBox subLocationComboBox) {
+        for (int i = 0; i < hero.getSubLocation().getRoots().length; i++) {
+            if (subLocationComboBox.getSelectedItem().toString().equals(hero.getLocation().getSubLocation()[i].getDescription())) {
+
+                hero.setSubLocation(hero.getLocation().getSubLocation()[i]);
+                String[] description = new String[hero.getSubLocation().getRoots().length];
+
+            }
+        }
     }
 
 }
