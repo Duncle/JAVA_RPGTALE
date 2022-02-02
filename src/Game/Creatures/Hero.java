@@ -2,10 +2,12 @@ package Game.Creatures;
 
 import Game.Map.Location;
 import Game.Map.SubLocation;
+import Game.Quests.Quest;
 import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.Locale;
 
 public class Hero extends Creature {
@@ -14,14 +16,16 @@ public class Hero extends Creature {
     private int intelligence;
     private Location location;
     private SubLocation subLocation;
+    private List<Quest> quests;
 
-    public Hero(int hitPoints, int manaPoints, int staminaPoints, int intelligence, int strength, int agility, Weapon weapon, Armor armor, Location location, SubLocation subLocation) {
+       public Hero(int hitPoints, int manaPoints, int staminaPoints, Weapon weapon, Armor armor, int strength, int agility, int intelligence, Location location, SubLocation subLocation, List<Quest> quests) {
         super(hitPoints, manaPoints, staminaPoints, weapon, armor);
         this.strength = strength;
         this.agility = agility;
         this.intelligence = intelligence;
         this.location = location;
         this.subLocation = subLocation;
+        this.quests = quests;
     }
 
     public int getStrength() {

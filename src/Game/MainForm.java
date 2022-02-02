@@ -1,24 +1,23 @@
 package Game;
 
 import Game.Creatures.Hero;
+import Game.Quests.Quest;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Set;
 
 public class MainForm extends JFrame {
 
     private JPanel rootPanel = new JPanel();
+
 
     public MainForm(Hero hero) throws IOException {
         //Определение размеров окна и позиционирование по центру экрана
@@ -49,13 +48,13 @@ public class MainForm extends JFrame {
 
         JList<String> eventLog = new JList<String>();
         JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
+        JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
 
 
         if (hero.getSubLocation().getNpc() != null) {
             listModelForActionsOnLocation.addElement("Поговорить с" + " " + hero.getSubLocation().getNpc().getName() + "ом");
 
         }
-        listModelForActionsOnLocation.addElement("111");
 
         //статы персонажа
         JLabel labelHitPoints = new JLabel(String.valueOf(hero.getHitPoints()));
@@ -88,7 +87,7 @@ public class MainForm extends JFrame {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });
-        //позиционирование и масштамирование элементов
+        //позиционирование и масштабирование элементов
         labelHitPoints.setBounds(44, 44, 140, 40);
         labelManaPoints.setBounds(44, 54, 40, 40);
         labelStaminaPoints.setBounds(44, 64, 40, 40);
@@ -99,7 +98,8 @@ public class MainForm extends JFrame {
         attackButton.setBounds(104, 104, 44, 44);
         subLocationComboBox.setBounds(200, 200, 300, 100);
         mainScreenImgContainer.setBounds(1000, 100, 639, 500);
-        actionsOnLocation.setBounds(200, 100, 200, 200);
+        actionsOnLocation.setBounds(200, 100, 400, 200);
+        actionsOnDialog.setBounds(200, 100, 400, 200);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
 
@@ -114,7 +114,9 @@ public class MainForm extends JFrame {
         rootPanel.add(attackButton);
         rootPanel.add(subLocationComboBox);
         rootPanel.add(actionsOnLocation);
+        rootPanel.add(actionsOnDialog);
 
+        actionsOnDialog.setVisible(false);
 
         //реализация атака по нажатию кнопки плюс обновление лейбла хитпоинты
         attackButton.addActionListener(new ActionListener() {
@@ -145,12 +147,31 @@ public class MainForm extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (actionsOnLocation.getSelectedIndex() == 0) {
-                    labeldialogWindowNpc.setText("hello");
+                    actionsOnLocation.setVisible(false);
+                    actionsOnDialog.setVisible(true);
+                    listModelForActionsOnDialog.removeAllElements();
+                    Set<String> setKeys = hero.getSubLocation().getNpc().getDialog().getDialogues().keySet();
+                    for (String k : setKeys) {
+                        listModelForActionsOnDialog.addElement(k);
+                    }
                 }
-
 
             }
         });
+
+
+        actionsOnDialog.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (actionsOnDialog.getSelectedValue() != null) {
+                    labeldialogWindowNpc.setText(String.valueOf(hero.getSubLocation().getNpc().getDialog().getDialogues().get(actionsOnDialog.getSelectedValue())));
+                    listModelForActionsOnDialog.removeElement(actionsOnDialog.getSelectedValue());
+                    hero.getSubLocation().getNpc().getDialog().getDialogues().remove(actionsOnDialog.getSelectedValue());
+                }
+            }
+        });
+
     }
 
 }

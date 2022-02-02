@@ -1,20 +1,22 @@
 package Game.Actions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Dialog extends Action {
+    HashMap<String, Object> dialogues = new HashMap<>();
 
-    String dialogues[][];
-
-    public Dialog(String[][] dialogues) {
+    public Dialog(HashMap<String, Object> dialogues) {
         this.dialogues = dialogues;
     }
 
-    public String[][] getDialogues() {
+    public HashMap<String, Object> getDialogues() {
         return dialogues;
     }
 
-    public void setDialogues(String[][] dialogues) {
+    public void setDialogues(HashMap<String, Object> dialogues) {
         this.dialogues = dialogues;
     }
 }
