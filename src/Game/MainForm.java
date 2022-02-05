@@ -1,7 +1,6 @@
 package Game;
 
 import Game.Creatures.Hero;
-import Game.Quests.Quest;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,33 +15,54 @@ import java.util.Set;
 
 public class MainForm extends JFrame {
 
-    private JPanel rootPanel = new JPanel();
+    private JLayeredPane mainPanel = new JLayeredPane();
+    private JPanel pauseMenuPanel = new JPanel();
 
 
     public MainForm(Hero hero) throws IOException {
-        //Определение размеров окна и позиционирование по центру экрана
+        /* Определение размеров окна и позиционирование по центру экрана */
         Dimension ScreenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(ScreenSize.width, ScreenSize.height);
         setLocationRelativeTo(null);
-        rootPanel.setLayout(null);
-        setContentPane(rootPanel);
+        setUndecorated(true);
+        mainPanel.setLayout(null);
+        setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        //Добавление PNG картинки
-
-        File file = new File("src/img/dummy.png");
-        Image image = ImageIO.read(file);
-        ImageIcon mainScreenImg = new ImageIcon(image);
-        JLabel mainScreenImgContainer = new JLabel("1");
-        mainScreenImgContainer.setText("");
+        /* Добавление PNG картинки */
+        ImageIcon mainScreenImg = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
+        JLabel mainScreenImgContainer = new JLabel("");
+        mainScreenImgContainer.setBounds(0, 0, mainScreenImg.getIconWidth(), mainScreenImg.getIconHeight());
         mainScreenImgContainer.setIcon(mainScreenImg);
 
-        BasicStroke stroke = new BasicStroke(10);
-        mainScreenImgContainer.setBorder(BorderFactory.createStrokeBorder(stroke, Color.YELLOW));
-        rootPanel.add(mainScreenImgContainer);
+        mainPanel.add(mainScreenImgContainer, 1);
 
-        //Event Log Interface
+        /* Добавление Nav Bar */
+        JButton menuButton = new JButton("Меню");
+        JButton characterButton = new JButton("Персонаж");
+        JButton questButton = new JButton("Квесты");
+        JButton mapButton = new JButton("Карта");
+        JButton settingsButton = new JButton("Настройки");
+        int menuButtonsWidth = 384;
+        int menuButtonsHeight = 40;
+        menuButton.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
+        characterButton.setBounds(menuButtonsWidth, 0, menuButtonsWidth, menuButtonsHeight);
+        questButton.setBounds(menuButtonsWidth * 2, 0, menuButtonsWidth, menuButtonsHeight);
+        mapButton.setBounds(menuButtonsWidth * 3, 0, menuButtonsWidth, menuButtonsHeight);
+        settingsButton.setBounds(menuButtonsWidth * 4, 0, menuButtonsWidth, menuButtonsHeight);
+        mainPanel.add(menuButton, 2);
+        mainPanel.add(characterButton, 2);
+        mainPanel.add(questButton, 2);
+        mainPanel.add(mapButton, 2);
+        mainPanel.add(settingsButton, 2);
+
+        setContentPane(mainPanel);
+        mainPanel.setVisible(true);
+        revalidate();
+        repaint();
+
+        /* Event Log Interface */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
         DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
 
@@ -97,24 +117,23 @@ public class MainForm extends JFrame {
         labeldialogWindowNpc.setBounds(1000, 750, 639, 50);
         attackButton.setBounds(104, 104, 44, 44);
         subLocationComboBox.setBounds(200, 200, 300, 100);
-        mainScreenImgContainer.setBounds(1000, 100, 639, 500);
         actionsOnLocation.setBounds(200, 100, 400, 200);
         actionsOnDialog.setBounds(200, 100, 400, 200);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
 
-        //добавление элементов на рут панель
-        rootPanel.add(labelHitPoints);
-        rootPanel.add(labelManaPoints);
-        rootPanel.add(labelStaminaPoints);
-        rootPanel.add(labelStrength);
-        rootPanel.add(labelAgility);
-        rootPanel.add(labelIntelligence);
-        rootPanel.add(labeldialogWindowNpc);
-        rootPanel.add(attackButton);
-        rootPanel.add(subLocationComboBox);
-        rootPanel.add(actionsOnLocation);
-        rootPanel.add(actionsOnDialog);
+        /* Добавление элементов на main панель */
+        mainPanel.add(labelHitPoints);
+        mainPanel.add(labelManaPoints);
+        mainPanel.add(labelStaminaPoints);
+        mainPanel.add(labelStrength);
+        mainPanel.add(labelAgility);
+        mainPanel.add(labelIntelligence);
+        mainPanel.add(labeldialogWindowNpc);
+        mainPanel.add(attackButton);
+        mainPanel.add(subLocationComboBox);
+        mainPanel.add(actionsOnLocation);
+        mainPanel.add(actionsOnDialog);
 
         actionsOnDialog.setVisible(false);
 
@@ -172,6 +191,8 @@ public class MainForm extends JFrame {
             }
         });
 
+        revalidate();
+        repaint();
     }
 
 }
