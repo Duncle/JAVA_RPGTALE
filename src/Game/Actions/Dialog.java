@@ -1,22 +1,32 @@
 package Game.Actions;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import Game.Trees.Node;
 
 public class Dialog extends Action {
-    HashMap<String, Object> dialogues = new HashMap<>();
 
-    public Dialog(HashMap<String, Object> dialogues) {
-        this.dialogues = dialogues;
+    private Node rootNode; // корневой узел
+    private Node currentNode; // текущий узел
+
+    public Dialog(Node rootNode) {
+        this.rootNode = rootNode;
+        this.currentNode = rootNode;
     }
 
-    public HashMap<String, Object> getDialogues() {
-        return dialogues;
+    public Node getCurrentNode() {
+        return currentNode;
     }
 
-    public void setDialogues(HashMap<String, Object> dialogues) {
-        this.dialogues = dialogues;
+    public void setCurrentNode(Node currentNode) {
+        this.currentNode = currentNode;
     }
+
+    public void setRootNode(Node rootNode) {
+        this.rootNode = rootNode;
+    }
+
+    public Node getRootNode() {
+        return rootNode;
+    }
+
 }

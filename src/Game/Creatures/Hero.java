@@ -1,5 +1,6 @@
 package Game.Creatures;
 
+import Game.ItemStorages.Inventory;
 import Game.Map.Location;
 import Game.Map.SubLocation;
 import Game.Quests.Quest;
@@ -17,8 +18,10 @@ public class Hero extends Creature {
     private Location location;
     private SubLocation subLocation;
     private List<Quest> quests;
+    private Inventory playerInventory;
 
-       public Hero(int hitPoints, int manaPoints, int staminaPoints, Weapon weapon, Armor armor, int strength, int agility, int intelligence, Location location, SubLocation subLocation, List<Quest> quests) {
+    public Hero(int hitPoints, int manaPoints, int staminaPoints, Weapon weapon, Armor armor, int strength,
+                int agility, int intelligence, Location location, SubLocation subLocation, List<Quest> quests,Inventory playerInventory) {
         super(hitPoints, manaPoints, staminaPoints, weapon, armor);
         this.strength = strength;
         this.agility = agility;
@@ -26,6 +29,7 @@ public class Hero extends Creature {
         this.location = location;
         this.subLocation = subLocation;
         this.quests = quests;
+        this.playerInventory = playerInventory;
     }
 
     public int getStrength() {
@@ -72,6 +76,21 @@ public class Hero extends Creature {
         this.subLocation = subLocation;
     }
 
+    public List<Quest> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(List<Quest> quests) {
+        this.quests = quests;
+    }
+
+    public Inventory getPlayerInventory() {
+        return playerInventory;
+    }
+
+    public void setPlayerInventory(Inventory playerInventory) {
+        this.playerInventory = playerInventory;
+    }
 
     public DefaultComboBoxModel<String> avaliableSublocationtsToMove(Hero hero, DefaultComboBoxModel cbModel) {
         //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
@@ -97,10 +116,7 @@ public class Hero extends Creature {
     public void toMove(Hero hero, JComboBox subLocationComboBox) {
         for (int i = 0; i < hero.getSubLocation().getRoots().length; i++) {
             if (subLocationComboBox.getSelectedItem().toString().equals(hero.getLocation().getSubLocation()[i].getDescription())) {
-
                 hero.setSubLocation(hero.getLocation().getSubLocation()[i]);
-                String[] description = new String[hero.getSubLocation().getRoots().length];
-
             }
         }
     }

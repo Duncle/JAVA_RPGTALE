@@ -1,6 +1,7 @@
 package Game;
 
 import Game.Creatures.Hero;
+import Game.Trees.Node;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class MainForm extends JFrame {
 
     private JLayeredPane mainPanel = new JLayeredPane();
     private JPanel pauseMenuPanel = new JPanel();
+
 
     public MainForm(Hero hero) throws IOException {
         /* Определение размеров окна и позиционирование по центру экрана */
@@ -96,6 +98,7 @@ public class MainForm extends JFrame {
         JButton continueButton = new JButton("Продолжить");
         JButton exitButton = new JButton("Выйти");
 
+
         continueButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 - 30, pauseButtonWidth, pauseButtonHeight);
         exitButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
 
@@ -108,38 +111,7 @@ public class MainForm extends JFrame {
         //mainPanel.add(blackout, 3);
 
         // Интерактивные действия кнопок
-        menuButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
 
-                continueButton.setVisible(true);
-                exitButton.setVisible(true);
-                revalidate();
-                repaint();
-            }
-        });
-
-        continueButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-                continueButton.setVisible(false);
-                exitButton.setVisible(false);
-                revalidate();
-                repaint();
-            }
-        });
-
-        exitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-                System.exit(0);
-            }
-        });
 
         /* Hero Panel Interface */
         JLabel heroName = new JLabel("Hero Display");
@@ -169,10 +141,19 @@ public class MainForm extends JFrame {
 
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
+
+
+
+
+        subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
+
+        mainPanel.add(subLocationComboBox, 0);
+
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
         subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
+            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                          final boolean cellHasFocus) {
 
                 if (index == -1) {
                     value = "Доступно для перемещения";
@@ -182,22 +163,8 @@ public class MainForm extends JFrame {
             }
         });
 
-        subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
 
-        mainPanel.add(subLocationComboBox, 0);
 
-        subLocationComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //если название выбранной саблокации совпадает с названии саблокации в масиве локация.саблокация , то герой негрой на нее переходит
-                hero.toMove(hero, subLocationComboBox);
-                //чистим старые пути локации
-                cbModel.removeAllElements();
-                //герой изменил местоположение, просмотр у новой локации ее путей и добавление их в комбобокс
-                //заполнение комбобокса
-                JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
-            }
-        });
 
         /* Minimap Interface */
 
@@ -279,6 +246,7 @@ public class MainForm extends JFrame {
         //кнопки
         JButton attackButton = new JButton("attack");
 
+
         //позиционирование и масштабирование элементов
         labelHitPoints.setBounds(344, 144, 140, 40);
         labelManaPoints.setBounds(344, 154, 40, 40);
@@ -310,6 +278,27 @@ public class MainForm extends JFrame {
 
         actionsOnDialog.setVisible(false);
 
+        subLocationComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //если название выбранной саблокации совпадает с названии саблокации в масиве локация.саблокация , то герой негрой на нее переходит
+                hero.toMove(hero, subLocationComboBox);
+                //чистим старые пути локации
+                listModelForActionsOnLocation.removeAllElements();
+                cbModel.removeAllElements();
+                //герой изменил местоположение, просмотр у новой локации ее путей и добавление их в комбобокс
+                //заполнение комбобокса
+                JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
+                //обновление имени нпс в комбобоксе действий на локации, после создания всего интерфейса надо создать метод, который ьбудет обновлять все элементы при переходе с локации на локацию
+                if (hero.getSubLocation().getNpc() != null) {
+                    listModelForActionsOnLocation.addElement("Поговорить с" + " " + hero.getSubLocation().getNpc().getName() + "ом");
+
+                }
+                actionsOnLocation.setVisible(true);
+                actionsOnDialog.setVisible(false);
+            }
+        });
+
         //реализация атака по нажатию кнопки плюс обновление лейбла хитпоинты
         attackButton.addActionListener(new ActionListener() {
             @Override
@@ -321,17 +310,22 @@ public class MainForm extends JFrame {
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
 
-        actionsOnLocation.addListSelectionListener(new ListSelectionListener() {
+
+        actionsOnLocation.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
                 if (actionsOnLocation.getSelectedIndex() == 0) {
                     actionsOnLocation.setVisible(false);
                     actionsOnDialog.setVisible(true);
                     listModelForActionsOnDialog.removeAllElements();
-                    Set<String> setKeys = hero.getSubLocation().getNpc().getDialog().getDialogues().keySet();
-                    for (String k : setKeys) {
-                        listModelForActionsOnDialog.addElement(k);
+
+                    for (Node k : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
+
+                        listModelForActionsOnDialog.addElement(k.getKey());
                     }
+
+
                 }
             }
         });
@@ -340,15 +334,67 @@ public class MainForm extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (actionsOnDialog.getSelectedValue() != null) {
-                    labelDialogWindowNpc.setText(String.valueOf(hero.getSubLocation().getNpc().getDialog().getDialogues().get(actionsOnDialog.getSelectedValue())));
-                    listModelForActionsOnDialog.removeElement(actionsOnDialog.getSelectedValue());
-                    hero.getSubLocation().getNpc().getDialog().getDialogues().remove(actionsOnDialog.getSelectedValue());
+
+                for (Node i : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
+
+                    if (actionsOnDialog.getSelectedValue().equals(String.valueOf(i.getKey()))) {
+
+                        hero.getSubLocation().getNpc().getDialog().setCurrentNode(i);
+                        listModelForActionsOnDialog.removeAllElements();
+                        break;
+
+                    }
                 }
+
+                if (hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes() == null) {
+
+                    hero.getSubLocation().getNpc().getDialog().setCurrentNode(hero.getSubLocation().getNpc().getDialog().getRootNode());
+
+                }
+
+                if (hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes() != null) {
+                    for (Node k : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
+
+                        listModelForActionsOnDialog.addElement(k.getKey());
+                    }
+                }
+                repaint();
+                revalidate();
             }
         });
 
-        revalidate();
-        repaint();
+        menuButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                continueButton.setVisible(true);
+                exitButton.setVisible(true);
+                revalidate();
+                repaint();
+            }
+        });
+
+        continueButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                continueButton.setVisible(false);
+                exitButton.setVisible(false);
+                revalidate();
+                repaint();
+            }
+        });
+
+        exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                System.exit(0);
+            }
+        });
+
     }
 }
