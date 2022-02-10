@@ -59,7 +59,7 @@ public class Main {
 
         Location town = new Location(1, new SubLocation[]{townGate, tavernOldSych, townFountain, chemestry});
 
-        Hero hero = new Hero(1, 0, 0,  sword, ironPlate, 10, 10, 10, town, chemestry,heroQuests);
+        Hero hero = new Hero(1, 0, 0,  sword, ironPlate, 12, 10, 10, town, chemestry,heroQuests);
 
         MainForm form = new MainForm(hero);
 

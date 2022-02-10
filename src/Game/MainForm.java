@@ -18,7 +18,6 @@ public class MainForm extends JFrame {
     private JLayeredPane mainPanel = new JLayeredPane();
     private JPanel pauseMenuPanel = new JPanel();
 
-
     public MainForm(Hero hero) throws IOException {
         /* Определение размеров окна и позиционирование по центру экрана */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -97,7 +96,6 @@ public class MainForm extends JFrame {
         JButton continueButton = new JButton("Продолжить");
         JButton exitButton = new JButton("Выйти");
 
-
         continueButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 - 30, pauseButtonWidth, pauseButtonHeight);
         exitButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
 
@@ -159,7 +157,7 @@ public class MainForm extends JFrame {
         int heroImgContainerWidth = heroImg.getIconWidth();
         int heroImgContainerHeight = heroImg.getIconHeight();
 
-        heroName.setBounds( 0, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
+        heroName.setBounds(0, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
         heroImgContainer.setBounds(0, menuButtonsHeight + heroNameHeight + 20, heroImgContainerWidth, heroImgContainerHeight);
 
         mainPanel.add(heroName);
@@ -171,12 +169,10 @@ public class MainForm extends JFrame {
 
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
-
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
         subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
-                                                          final boolean cellHasFocus) {
+            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
 
                 if (index == -1) {
                     value = "Доступно для перемещения";
@@ -185,7 +181,6 @@ public class MainForm extends JFrame {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });
-
 
         subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
 
@@ -244,7 +239,7 @@ public class MainForm extends JFrame {
         eventlogName.setForeground(Color.WHITE);
         eventlogText.setForeground(Color.WHITE);
         eventlogText.setBackground(Color.BLACK);
-        eventlogText.setMargin(new Insets(70,20,10,10));
+        eventlogText.setMargin(new Insets(70, 20, 10, 10));
 
         eventlogName.setBounds(screenSize.width - eventlogTextWidth / 2 - 50, screenSize.height - eventlogTextHeight - 45, eventlogNametWidth, eventlogNameHeight);
         eventlogText.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
@@ -283,7 +278,6 @@ public class MainForm extends JFrame {
         JLabel labelDialogWindowNpc = new JLabel(String.valueOf(hero.getIntelligence()));
         //кнопки
         JButton attackButton = new JButton("attack");
-
 
         //позиционирование и масштабирование элементов
         labelHitPoints.setBounds(344, 144, 140, 40);
@@ -326,9 +320,6 @@ public class MainForm extends JFrame {
         });
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
-
-
-
 
         actionsOnLocation.addListSelectionListener(new ListSelectionListener() {
             @Override
