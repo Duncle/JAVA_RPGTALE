@@ -36,7 +36,7 @@ public class Main {
 
         Node tardenDialogNode1_2_1_1 = new Node(6, "а я слышал что...", "мда...");
 
-        Node tardenDialogNode1_2_1 = new Node(4, "почему", "я не торговец",  Arrays.asList(tardenDialogNode1_2_1_1));
+        Node tardenDialogNode1_2_1 = new Node(4, "почему", "я не торговец", Arrays.asList(tardenDialogNode1_2_1_1));
         Node tardenDialogNode1_2_2 = new Node(5, "Где найти торговца", "на площади");
 
         Node tardenDialogNode1_1 = new Node(1, "Здравствуй", "Привет");
@@ -65,7 +65,8 @@ public class Main {
 
         Location town = new Location(1, new SubLocation[]{townGate, tavernOldSych, townFountain, chemestry});
 
-        Hero hero = new Hero(1, 0, 0, sword, ironPlate, 10, 10, 10, town, chemestry, heroQuests,playerInventory);
+
+        Hero hero = new Hero(1, 0, 0, sword, ironPlate, 10, 10, 10, town, chemestry, heroQuests, playerInventory);
         MainForm form = new MainForm(hero);
 
 
