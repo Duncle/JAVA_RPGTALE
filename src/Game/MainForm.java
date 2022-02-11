@@ -16,9 +16,7 @@ import java.util.Set;
 
 public class MainForm extends JFrame {
 
-    private JLayeredPane mainPanel = new JLayeredPane();
-    private JPanel pauseMenuPanel = new JPanel();
-
+    private JLayeredPane rootPanel = getLayeredPane();
 
     public MainForm(Hero hero) throws IOException {
         /* Определение размеров окна и позиционирование по центру экрана */
@@ -26,16 +24,80 @@ public class MainForm extends JFrame {
         setSize(screenSize.width, screenSize.height);
         setLocationRelativeTo(null);
         setUndecorated(true);
-        mainPanel.setLayout(null);
-        setContentPane(mainPanel);
+        rootPanel.setLayout(null);
+        //setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        /* Создание основных панелей */
+        JPanel bgPanel = new JPanel();
+        JPanel mainPanel = new JPanel();
+        JPanel navbarPanel = new JPanel();
+        JPanel pauseMenuPanel = new JPanel();
+        JPanel characterPanel = new JPanel();
+        JPanel questPanel = new JPanel();
+        JPanel mapPanel = new JPanel();
+        JPanel settingsPanel = new JPanel();
+        JPanel blackoutPanel = new JPanel();
+
+        bgPanel.setLayout(null);
+        mainPanel.setLayout(null);
+        navbarPanel.setLayout(null);
+        pauseMenuPanel.setLayout(null);
+        characterPanel.setLayout(null);
+        questPanel.setLayout(null);
+        mapPanel.setLayout(null);
+        settingsPanel.setLayout(null);
+        blackoutPanel.setLayout(null);
+
+        mainPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        bgPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        navbarPanel.setBounds(0, 0, screenSize.width, 40);
+        pauseMenuPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        characterPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        questPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        mapPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        settingsPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        blackoutPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+
+        mainPanel.setOpaque(false);
+        bgPanel.setOpaque(false);
+        navbarPanel.setOpaque(false);
+        pauseMenuPanel.setOpaque(false);
+        characterPanel.setOpaque(false);
+        questPanel.setOpaque(false);
+        mapPanel.setOpaque(false);
+        settingsPanel.setOpaque(false);
+        blackoutPanel.setOpaque(false);
+        rootPanel.setOpaque(false);
+
+        pauseMenuPanel.setVisible(false);
+        characterPanel.setVisible(false);
+        questPanel.setVisible(false);
+        mapPanel.setVisible(false);
+        settingsPanel.setVisible(false);
+        blackoutPanel.setVisible(false);
+
+        rootPanel.add(mainPanel, new Integer(5));
+        rootPanel.add(bgPanel, new Integer(1));
+        rootPanel.add(navbarPanel, new Integer(10));
+        rootPanel.add(pauseMenuPanel, new Integer(7));
+        rootPanel.add(characterPanel, new Integer(10));
+        rootPanel.add(questPanel, new Integer(10));
+        rootPanel.add(mapPanel, new Integer(10));
+        rootPanel.add(settingsPanel, new Integer(10));
+        rootPanel.add(blackoutPanel, new Integer(3));
+
         /* Импорт изображений */
-        ImageIcon mainScreenImg = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
+        ImageIcon mainScreenBG = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
         ImageIcon heroImg = new ImageIcon(ImageIO.read(new File("src/res/img/NegrTest.png")));
         ImageIcon minimapImg = new ImageIcon(ImageIO.read(new File("src/res/img/minimap.png")));
         ImageIcon characterImg = new ImageIcon(ImageIO.read(new File("src/res/img/charImgTest.png")));
+        ImageIcon characterPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/characterList.png")));
+        ImageIcon questPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/questBG.jpg")));
+        ImageIcon mapPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/mapBG.jpg")));
+        ImageIcon settingsPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/settingsBG.png")));
+        ImageIcon blackoutBG = new ImageIcon(ImageIO.read(new File("src/res/img/blackoutBG90.png")));
 
         /* Гравитационная постоянная */
         int pauseButtonWidth = screenSize.width / 5;
@@ -61,10 +123,13 @@ public class MainForm extends JFrame {
         /* Добавление PNG картинки */
 
         JLabel mainScreenImgContainer = new JLabel("");
-        mainScreenImgContainer.setBounds(0, 0, mainScreenImg.getIconWidth(), mainScreenImg.getIconHeight());
-        mainScreenImgContainer.setIcon(mainScreenImg);
+        mainScreenImgContainer.setBounds(0, 0, mainScreenBG.getIconWidth(), mainScreenBG.getIconHeight());
+        mainScreenImgContainer.setIcon(mainScreenBG);
 
-        //mainPanel.add(mainScreenImgContainer, 0);
+        /* Добавление blackout */
+        JLabel blackoutContainer = new JLabel("");
+        blackoutContainer.setBounds(0, 0, blackoutBG.getIconWidth(), blackoutBG.getIconHeight());
+        blackoutContainer.setIcon(blackoutBG);
 
         /* Добавление Nav Bar */
         JButton menuButton = new JButton("Меню");
@@ -78,16 +143,11 @@ public class MainForm extends JFrame {
         questButton.setBounds(menuButtonsWidth * 2, 0, menuButtonsWidth, menuButtonsHeight);
         mapButton.setBounds(menuButtonsWidth * 3, 0, menuButtonsWidth, menuButtonsHeight);
         settingsButton.setBounds(menuButtonsWidth * 4, 0, menuButtonsWidth, menuButtonsHeight);
-        mainPanel.add(menuButton, 0);
-        mainPanel.add(characterButton, 0);
-        mainPanel.add(questButton, 0);
-        mainPanel.add(mapButton, 0);
-        mainPanel.add(settingsButton, 0);
 
-        setContentPane(mainPanel);
-        mainPanel.setVisible(true);
-        revalidate();
-        repaint();
+        /* Добавление кнопки возвращения к игре */
+        JButton backButton = new JButton("Вернуться в игру");
+
+        backButton.setBounds(screenSize.width - menuButtonsWidth, screenSize.height - menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
 
         /* Добавление PauseMenu */
         // Темный фон для улучшения видимости меню паузы
@@ -102,16 +162,9 @@ public class MainForm extends JFrame {
         continueButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 - 30, pauseButtonWidth, pauseButtonHeight);
         exitButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
 
-        mainPanel.add(continueButton, 0);
-        mainPanel.add(exitButton, 0);
-
-        continueButton.setVisible(false);
-        exitButton.setVisible(false);
-
         //mainPanel.add(blackout, 3);
 
         // Интерактивные действия кнопок
-
 
         /* Hero Panel Interface */
         JLabel heroName = new JLabel("Hero Display");
@@ -132,22 +185,13 @@ public class MainForm extends JFrame {
         heroName.setBounds(0, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
         heroImgContainer.setBounds(0, menuButtonsHeight + heroNameHeight + 20, heroImgContainerWidth, heroImgContainerHeight);
 
-        mainPanel.add(heroName);
-        mainPanel.add(heroImgContainer);
-
         /* Location Picker Interface */
         //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
         DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel();
 
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
-
-
-
-
         subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
-
-        mainPanel.add(subLocationComboBox, 0);
 
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
         subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
@@ -163,17 +207,12 @@ public class MainForm extends JFrame {
             }
         });
 
-
-
-
         /* Minimap Interface */
 
         JLabel minimapImgContainer = new JLabel("");
 
         minimapImgContainer.setBounds(0, screenSize.height - 200, 200, 200);
         minimapImgContainer.setIcon(minimapImg);
-
-        mainPanel.add(minimapImgContainer, 0);
 
         /* Character Display Interface */
         JLabel characterName = new JLabel("Character Display");
@@ -184,8 +223,6 @@ public class MainForm extends JFrame {
         characterImgContainer.setBounds(0, 0, 50, 50);
         characterImgContainer.setIcon(characterImg);
 
-        //mainPanel.add(mainScreenImgContainer, 0);
-
         characterName.setForeground(Color.BLACK);
 
         int characterImgContainerWidth = characterImg.getIconWidth();
@@ -193,9 +230,6 @@ public class MainForm extends JFrame {
 
         characterName.setBounds(screenSize.width - characterNameWidth - 100, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
         characterImgContainer.setBounds(screenSize.width - characterNameWidth - 100 + characterNameWidth / 2 - characterImgContainerWidth / 2, menuButtonsHeight + 100, characterImgContainerWidth, characterImgContainerHeight);
-
-        mainPanel.add(characterName);
-        mainPanel.add(characterImgContainer);
 
         /* Event Log Interface */
         JLabel eventlogName = new JLabel("Event Log");
@@ -217,11 +251,9 @@ public class MainForm extends JFrame {
         for (int i = 0; i < eventlogEvents.length; i++) {
             textBuffer += eventlogEvents[i] + "\n\n\n";
         }
+
         eventlogText.setText(textBuffer);
         System.out.println(textBuffer);
-
-        mainPanel.add(eventlogName);
-        mainPanel.add(eventlogText);
 
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
@@ -246,7 +278,6 @@ public class MainForm extends JFrame {
         //кнопки
         JButton attackButton = new JButton("attack");
 
-
         //позиционирование и масштабирование элементов
         labelHitPoints.setBounds(344, 144, 140, 40);
         labelManaPoints.setBounds(344, 154, 40, 40);
@@ -264,17 +295,49 @@ public class MainForm extends JFrame {
         setFont(new Font("Dialog", Font.PLAIN, 14));
 
         /* Добавление элементов на main панель */
-        mainPanel.add(labelHitPoints, 0);
-        mainPanel.add(labelManaPoints, 0);
-        mainPanel.add(labelStaminaPoints, 0);
-        mainPanel.add(labelStrength, 0);
-        mainPanel.add(labelAgility, 0);
-        mainPanel.add(labelIntelligence, 0);
-        mainPanel.add(labelDialogWindowNpc, 0);
-        mainPanel.add(attackButton, 0);
 
-        mainPanel.add(actionsOnLocation, 0);
-        mainPanel.add(actionsOnDialog, 0);
+//        JLayeredPane.putLayer(mainScreenImgContainer, 1);
+//        JLayeredPane.putLayer(menuButton, 2);
+//        JLayeredPane.putLayer(characterButton, 2);
+//        JLayeredPane.putLayer(questButton, 2);
+//        JLayeredPane.putLayer(mapButton, 2);
+//        JLayeredPane.putLayer(settingsButton, 2);
+
+        bgPanel.add(mainScreenImgContainer);
+        blackoutPanel.add(blackoutContainer);
+
+        navbarPanel.add(menuButton);
+        navbarPanel.add(characterButton);
+        navbarPanel.add(questButton);
+        navbarPanel.add(mapButton);
+        navbarPanel.add(settingsButton);
+
+        pauseMenuPanel.add(continueButton);
+        pauseMenuPanel.add(exitButton);
+
+        mainPanel.add(subLocationComboBox);
+        mainPanel.add(minimapImgContainer);
+        mainPanel.add(characterName);
+        mainPanel.add(characterImgContainer);
+        mainPanel.add(eventlogName);
+        mainPanel.add(eventlogText);
+
+        mainPanel.add(heroName);
+        mainPanel.add(heroImgContainer);
+
+        mainPanel.add(labelHitPoints);
+        mainPanel.add(labelManaPoints);
+        mainPanel.add(labelStaminaPoints);
+        mainPanel.add(labelStrength);
+        mainPanel.add(labelAgility);
+        mainPanel.add(labelIntelligence);
+        mainPanel.add(labelDialogWindowNpc);
+        mainPanel.add(attackButton);
+
+        mainPanel.add(actionsOnLocation);
+        mainPanel.add(actionsOnDialog);
+
+        rootPanel.add(backButton, new Integer(15));
 
         actionsOnDialog.setVisible(false);
 
@@ -310,7 +373,6 @@ public class MainForm extends JFrame {
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
 
-
         actionsOnLocation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -324,8 +386,6 @@ public class MainForm extends JFrame {
 
                         listModelForActionsOnDialog.addElement(k.getKey());
                     }
-
-
                 }
             }
         });
@@ -358,32 +418,92 @@ public class MainForm extends JFrame {
                         listModelForActionsOnDialog.addElement(k.getKey());
                     }
                 }
-                repaint();
-                revalidate();
             }
         });
 
+        /* Обработчики кнопок навигационного меню */
         menuButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                continueButton.setVisible(true);
-                exitButton.setVisible(true);
-                revalidate();
-                repaint();
+                pauseMenuPanel.setVisible(true);
+                blackoutPanel.setVisible(true);
+                //revalidate();
+                //repaint();
             }
         });
 
+        characterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(characterPanelBG);
+                characterPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        questButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(questPanelBG);
+                questPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        mapButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(mapPanelBG);
+                mapPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        settingsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(settingsPanelBG);
+                settingsPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        /* Обработчики кнопок меню паузы */
         continueButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                continueButton.setVisible(false);
-                exitButton.setVisible(false);
-                revalidate();
-                repaint();
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
             }
         });
 
@@ -396,5 +516,25 @@ public class MainForm extends JFrame {
             }
         });
 
+        /* Обработчики кнопки возвращения к игре */
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(true);
+                mainScreenImgContainer.setIcon(mainScreenBG);
+                characterPanel.setVisible(false);
+                questPanel.setVisible(false);
+                mapPanel.setVisible(false);
+                settingsPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        repaint();
+        revalidate();
     }
 }

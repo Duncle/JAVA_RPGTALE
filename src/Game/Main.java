@@ -45,9 +45,7 @@ public class Main {
 
         Node tardenDialogRootNode = new Node(0, "Подойти к дракону", "Кто тут", Arrays.asList(tardenDialogNode1_1, tardenDialogNode1_2, tardenDialogNode1_3));
 
-
         Dialog tardenDialog = new Dialog(tardenDialogRootNode);
-
 
 //        Dialog  JimdjarDialog = new Dialog(dialogForJimdjar);
 
@@ -65,10 +63,7 @@ public class Main {
 
         Location town = new Location(1, new SubLocation[]{townGate, tavernOldSych, townFountain, chemestry});
 
-
         Hero hero = new Hero(1, 0, 0, sword, ironPlate, 10, 10, 10, town, chemestry, heroQuests, playerInventory);
         MainForm form = new MainForm(hero);
-
-
     }
 }
