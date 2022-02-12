@@ -2,8 +2,12 @@ package Game;
 
 import Game.Creatures.Hero;
 import Game.Trees.Node;
+import Game.Utils.Music;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,7 +16,12 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import java.net.MalformedURLException;
 import java.util.Set;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class MainForm extends JFrame {
 
@@ -98,6 +107,10 @@ public class MainForm extends JFrame {
         ImageIcon mapPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/mapBG.jpg")));
         ImageIcon settingsPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/settingsBG.png")));
         ImageIcon blackoutBG = new ImageIcon(ImageIO.read(new File("src/res/img/blackoutBG90.png")));
+
+        /* Импорт аудио */
+        Music music = new Music();
+        URL pauseMenuMusic = getClass().getClassLoader().getResource("src/res/audio/pauseMenuElemClick.mp3");
 
         /* Гравитационная постоянная */
         int pauseButtonWidth = screenSize.width / 5;
@@ -424,6 +437,13 @@ public class MainForm extends JFrame {
         /* Обработчики кнопок навигационного меню */
         menuButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
@@ -435,6 +455,13 @@ public class MainForm extends JFrame {
         });
 
         characterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -451,6 +478,13 @@ public class MainForm extends JFrame {
 
         questButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
@@ -466,6 +500,13 @@ public class MainForm extends JFrame {
 
         mapButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
@@ -480,6 +521,13 @@ public class MainForm extends JFrame {
         });
 
         settingsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -497,8 +545,17 @@ public class MainForm extends JFrame {
         /* Обработчики кнопок меню паузы */
         continueButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+            }
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
+                music.play("src/res/audio/pauseMenuContinueClick.wav");
 
                 pauseMenuPanel.setVisible(false);
                 blackoutPanel.setVisible(false);
@@ -508,6 +565,13 @@ public class MainForm extends JFrame {
         });
 
         exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -519,8 +583,17 @@ public class MainForm extends JFrame {
         /* Обработчики кнопки возвращения к игре */
         backButton.addMouseListener(new MouseAdapter() {
             @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+            }
+
+            @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
+                music.play("src/res/audio/pauseMenuContinueClick.wav");
 
                 mainPanel.setVisible(true);
                 mainScreenImgContainer.setIcon(mainScreenBG);
