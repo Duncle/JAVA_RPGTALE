@@ -28,6 +28,12 @@ public class MainForm extends JFrame {
     private JLayeredPane rootPanel = getLayeredPane();
 
     public MainForm(Hero hero) throws IOException {
+
+        setTitle("RPGTALE");
+
+        /* Cтартовая музыка */
+        Music music = new Music();
+
         /* Определение размеров окна и позиционирование по центру экрана */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
@@ -40,13 +46,24 @@ public class MainForm extends JFrame {
 
         /* Создание основных панелей */
         JPanel bgPanel = new JPanel();
+
         JPanel mainPanel = new JPanel();
+        JPanel heroMainPanel = new JPanel();
+        JPanel heroStateMainPanel = new JPanel();
+        JPanel heroActionsMainPanel = new JPanel();
+        JPanel locationsMainPanel = new JPanel();
+        JPanel minimapMainPanel = new JPanel();
+        JPanel creatureMainPanel = new JPanel();
+        JPanel eventlogMainPanel = new JPanel();
+
         JPanel navbarPanel = new JPanel();
+
         JPanel pauseMenuPanel = new JPanel();
         JPanel characterPanel = new JPanel();
         JPanel questPanel = new JPanel();
         JPanel mapPanel = new JPanel();
         JPanel settingsPanel = new JPanel();
+
         JPanel blackoutPanel = new JPanel();
 
         bgPanel.setLayout(null);
@@ -58,8 +75,16 @@ public class MainForm extends JFrame {
         mapPanel.setLayout(null);
         settingsPanel.setLayout(null);
         blackoutPanel.setLayout(null);
+        heroMainPanel.setLayout(null);
+        heroStateMainPanel.setLayout(null);
+        heroActionsMainPanel.setLayout(null);
+        locationsMainPanel.setLayout(null);
+        minimapMainPanel.setLayout(null);
+        creatureMainPanel.setLayout(null);
+        eventlogMainPanel.setLayout(null);
 
         mainPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+
         bgPanel.setBounds(0, 0, screenSize.width, screenSize.height);
         navbarPanel.setBounds(0, 0, screenSize.width, 40);
         pauseMenuPanel.setBounds(0, 0, screenSize.width, screenSize.height);
@@ -70,13 +95,23 @@ public class MainForm extends JFrame {
         blackoutPanel.setBounds(0, 0, screenSize.width, screenSize.height);
 
         mainPanel.setOpaque(false);
+        heroMainPanel.setOpaque(false);
+        heroStateMainPanel.setOpaque(false);
+        heroActionsMainPanel.setOpaque(false);
+        locationsMainPanel.setOpaque(false);
+        minimapMainPanel.setOpaque(false);
+        creatureMainPanel.setOpaque(false);
+        eventlogMainPanel.setOpaque(false);
+
         bgPanel.setOpaque(false);
+
         navbarPanel.setOpaque(false);
         pauseMenuPanel.setOpaque(false);
         characterPanel.setOpaque(false);
         questPanel.setOpaque(false);
         mapPanel.setOpaque(false);
         settingsPanel.setOpaque(false);
+
         blackoutPanel.setOpaque(false);
         rootPanel.setOpaque(false);
 
@@ -101,7 +136,7 @@ public class MainForm extends JFrame {
         ImageIcon mainScreenBG = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
         ImageIcon heroImg = new ImageIcon(ImageIO.read(new File("src/res/img/NegrTest.png")));
         ImageIcon minimapImg = new ImageIcon(ImageIO.read(new File("src/res/img/minimap.png")));
-        ImageIcon characterImg = new ImageIcon(ImageIO.read(new File("src/res/img/charImgTest.png")));
+        ImageIcon creatureImg = new ImageIcon(ImageIO.read(new File("src/res/img/charImgTest.png")));
         ImageIcon characterPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/characterList.png")));
         ImageIcon questPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/questBG.jpg")));
         ImageIcon mapPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/mapBG.jpg")));
@@ -109,7 +144,6 @@ public class MainForm extends JFrame {
         ImageIcon blackoutBG = new ImageIcon(ImageIO.read(new File("src/res/img/blackoutBG90.png")));
 
         /* Импорт аудио */
-        Music music = new Music();
         URL pauseMenuMusic = getClass().getClassLoader().getResource("src/res/audio/pauseMenuElemClick.mp3");
 
         /* Гравитационная постоянная */
@@ -122,13 +156,10 @@ public class MainForm extends JFrame {
         int heroNameWidth = 300;
         int heroNameHeight = 32;
 
-        int subLocationComboBoxWidth = menuButtonsWidth;
-        int subLocationComboBoxHeight = menuButtonsHeight;
+        int creatureNameWidth = 300;
+        int creatureNameHeight = 32;
 
-        int characterNameWidth = 300;
-        int characterNameHeight = 32;
-
-        int eventlogNametWidth = 200;
+        int eventlogNameWidth = 200;
         int eventlogNameHeight = 40;
         int eventlogTextWidth = screenSize.width / 3;
         int eventlogTextHeight = screenSize.height / 3;
@@ -181,7 +212,6 @@ public class MainForm extends JFrame {
 
         /* Hero Panel Interface */
         JLabel heroName = new JLabel("Hero Display");
-
         JLabel heroImgContainer = new JLabel("");
         heroName.setFont(new Font("Monaco", Font.PLAIN, 32));
 
@@ -195,8 +225,21 @@ public class MainForm extends JFrame {
         int heroImgContainerWidth = heroImg.getIconWidth();
         int heroImgContainerHeight = heroImg.getIconHeight();
 
-        heroName.setBounds(0, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
-        heroImgContainer.setBounds(0, menuButtonsHeight + heroNameHeight + 20, heroImgContainerWidth, heroImgContainerHeight);
+        heroMainPanel.setBounds(0, menuButtonsHeight + 20, 300, 300);
+
+        heroName.setBounds(0, 0, creatureNameWidth, creatureNameHeight);
+        heroImgContainer.setBounds(0, 10, heroImgContainerWidth, heroImgContainerHeight);
+
+        /* Hero Actions Interface */
+        JButton heroFirstAction = new JButton("Действие 1");
+        JButton heroSecondAction = new JButton("Действие 2");
+        JButton heroThirdAction = new JButton("Действие 3");
+
+        heroActionsMainPanel.setBounds(0, 500, menuButtonsWidth * 3, menuButtonsHeight * 3);
+
+        heroFirstAction.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
+        heroSecondAction.setBounds(0, menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
+        heroThirdAction.setBounds(0, menuButtonsHeight * 2, menuButtonsWidth, menuButtonsHeight);
 
         /* Location Picker Interface */
         //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
@@ -204,7 +247,8 @@ public class MainForm extends JFrame {
 
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
-        subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
+        locationsMainPanel.setBounds(0, screenSize.height - minimapImg.getIconHeight() - menuButtonsHeight - 20, menuButtonsWidth, menuButtonsHeight);
+        subLocationComboBox.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
 
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
         subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
@@ -224,25 +268,29 @@ public class MainForm extends JFrame {
 
         JLabel minimapImgContainer = new JLabel("");
 
-        minimapImgContainer.setBounds(0, screenSize.height - 200, 200, 200);
+        minimapMainPanel.setBounds(0, screenSize.height - 200, 200, 200);
+
+        minimapImgContainer.setBounds(0, 0, 200, 200);
         minimapImgContainer.setIcon(minimapImg);
 
-        /* Character Display Interface */
-        JLabel characterName = new JLabel("Character Display");
+        /* Creature Display Interface */
+        JLabel creatureName = new JLabel("Creature Display");
 
-        JLabel characterImgContainer = new JLabel("");
-        characterName.setFont(new Font("Monaco", Font.PLAIN, 32));
+        JLabel creatureImgContainer = new JLabel("");
+        creatureName.setFont(new Font("Monaco", Font.PLAIN, 32));
 
-        characterImgContainer.setBounds(0, 0, 50, 50);
-        characterImgContainer.setIcon(characterImg);
+        creatureImgContainer.setBounds(0, 0, 50, 50);
+        creatureImgContainer.setIcon(creatureImg);
 
-        characterName.setForeground(Color.BLACK);
+        creatureName.setForeground(Color.BLACK);
 
-        int characterImgContainerWidth = characterImg.getIconWidth();
-        int characterImgContainerHeight = characterImg.getIconHeight();
+        int creatureImgContainerWidth = creatureImg.getIconWidth();
+        int creatureImgContainerHeight = creatureImg.getIconHeight();
 
-        characterName.setBounds(screenSize.width - characterNameWidth - 100, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
-        characterImgContainer.setBounds(screenSize.width - characterNameWidth - 100 + characterNameWidth / 2 - characterImgContainerWidth / 2, menuButtonsHeight + 100, characterImgContainerWidth, characterImgContainerHeight);
+        creatureMainPanel.setBounds(screenSize.width - creatureNameWidth - 100 + creatureNameWidth / 2 - creatureImgContainerWidth / 2, menuButtonsHeight + 100, creatureImgContainerWidth, creatureImgContainerHeight);
+
+        creatureName.setBounds(0, 0, creatureNameWidth, creatureNameHeight);
+        creatureImgContainer.setBounds(0, 10, creatureImgContainerWidth, creatureImgContainerHeight);
 
         /* Event Log Interface */
         JLabel eventlogName = new JLabel("Event Log");
@@ -255,8 +303,10 @@ public class MainForm extends JFrame {
         eventlogText.setBackground(Color.BLACK);
         eventlogText.setMargin(new Insets(70, 20, 10, 10));
 
-        eventlogName.setBounds(screenSize.width - eventlogTextWidth / 2 - 50, screenSize.height - eventlogTextHeight - 45, eventlogNametWidth, eventlogNameHeight);
-        eventlogText.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
+        eventlogMainPanel.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
+
+        eventlogName.setBounds(0, 0, eventlogNameWidth, eventlogNameHeight);
+        eventlogText.setBounds(0, 10, eventlogTextWidth, eventlogTextHeight);
 
         String[] eventlogEvents = {"Событие 1", "Событие 2 (текст)", "Василий Дмитрич"};
 
@@ -328,15 +378,31 @@ public class MainForm extends JFrame {
         pauseMenuPanel.add(continueButton);
         pauseMenuPanel.add(exitButton);
 
-        mainPanel.add(subLocationComboBox);
-        mainPanel.add(minimapImgContainer);
-        mainPanel.add(characterName);
-        mainPanel.add(characterImgContainer);
-        mainPanel.add(eventlogName);
-        mainPanel.add(eventlogText);
+        //Добавление панелей-контейнеров на главный экран
+        mainPanel.add(heroMainPanel);
+        mainPanel.add(heroStateMainPanel);
+        mainPanel.add(heroActionsMainPanel);
+        mainPanel.add(locationsMainPanel);
+        mainPanel.add(minimapMainPanel);
+        mainPanel.add(creatureMainPanel);
+        mainPanel.add(eventlogMainPanel);
 
-        mainPanel.add(heroName);
-        mainPanel.add(heroImgContainer);
+        heroMainPanel.add(heroName);
+        heroMainPanel.add(heroImgContainer);
+
+        heroActionsMainPanel.add(heroFirstAction);
+        heroActionsMainPanel.add(heroSecondAction);
+        heroActionsMainPanel.add(heroThirdAction);
+
+        locationsMainPanel.add(subLocationComboBox);
+
+        minimapMainPanel.add(minimapImgContainer);
+
+        creatureMainPanel.add(creatureName);
+        creatureMainPanel.add(creatureImgContainer);
+
+        eventlogMainPanel.add(eventlogName);
+        eventlogMainPanel.add(eventlogText);
 
         mainPanel.add(labelHitPoints);
         mainPanel.add(labelManaPoints);
@@ -350,8 +416,7 @@ public class MainForm extends JFrame {
         mainPanel.add(actionsOnLocation);
         mainPanel.add(actionsOnDialog);
 
-        rootPanel.add(backButton, new Integer(15));
-
+        mainPanel.add(backButton);
         actionsOnDialog.setVisible(false);
 
         subLocationComboBox.addActionListener(new ActionListener() {
@@ -525,7 +590,14 @@ public class MainForm extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
 
-                music.play("src/res/audio/menuButtonHover.wav");
+                music.play("src/res/audio/longSound.wav");
+            }
+
+            @Override
+            public void mouseExited (MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.stop();
             }
 
             @Override
@@ -586,15 +658,16 @@ public class MainForm extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
 
-                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+                //music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+                music.play("src/res/audio/Angel.wav");
             }
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                music.play("src/res/audio/pauseMenuContinueClick.wav");
-
+                //music.play("src/res/audio/pauseMenuContinueClick.wav");
+                music.play("src/res/audio/gameExit.wav");
                 mainPanel.setVisible(true);
                 mainScreenImgContainer.setIcon(mainScreenBG);
                 characterPanel.setVisible(false);
@@ -609,5 +682,6 @@ public class MainForm extends JFrame {
 
         repaint();
         revalidate();
+        music.play("src/res/audio/gameExit.wav");
     }
 }

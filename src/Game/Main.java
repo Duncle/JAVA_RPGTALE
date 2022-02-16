@@ -13,6 +13,7 @@ import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,6 +65,7 @@ public class Main {
         Location town = new Location(1, new SubLocation[]{townGate, tavernOldSych, townFountain, chemestry});
 
         Hero hero = new Hero(1, 0, 0, sword, ironPlate, 10, 10, 10, town, chemestry, heroQuests, playerInventory);
+
         MainForm form = new MainForm(hero);
     }
 }

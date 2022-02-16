@@ -10,6 +10,8 @@ import javax.sound.sampled.Clip;
 
 public class Music {
 
+    java.applet.AudioClip clip;
+
     public void play(String filepath) {
 
         URL soundByte = null;
@@ -19,8 +21,12 @@ public class Music {
                 MalformedURLException ex) {
             ex.printStackTrace();
         }
-        java.applet.AudioClip clip = java.applet.Applet.newAudioClip(soundByte);
+        clip = java.applet.Applet.newAudioClip(soundByte);
         clip.play();
+    }
+
+    public void stop() {
+        clip.stop();
     }
 
 }
