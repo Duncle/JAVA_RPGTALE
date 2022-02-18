@@ -444,19 +444,6 @@ mainPanel.add(eventLog1);
         actionsOnDialog.setVisible(false);
 
 
-        subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
-                                                          final boolean cellHasFocus) {
-
-                if (index == -1) {
-                    value = "Доступно для перемещения";
-                }
-
-                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            }
-        });
-
         subLocationComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -710,9 +697,9 @@ mainPanel.add(eventLog1);
 
         table.setRowSelectionAllowed(false);
 
-        table.setBounds(950, 400, 800, 400);
+        table.setBounds(750, 50, 800, 400);
 
-        mainPanel.add(table);
+        characterPanel.add(table);
         // drug and drop!
 
         // выведем окно на экран
