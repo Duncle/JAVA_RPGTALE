@@ -1,6 +1,8 @@
 package Game;
 
 import Game.Creatures.Hero;
+import Game.Stuffs.Stuff;
+import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
 import Game.Utils.Music;
 
@@ -10,10 +12,18 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.net.MalformedURLException;
@@ -24,8 +34,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class MainForm extends JFrame {
-
     private JLayeredPane rootPanel = getLayeredPane();
+
 
     public MainForm(Hero hero) throws IOException {
 
@@ -253,6 +263,7 @@ public class MainForm extends JFrame {
 
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
+
         locationsMainPanel.setBounds(0, screenSize.height - minimapImg.getIconHeight() - menuButtonsHeight - 20, menuButtonsWidth, menuButtonsHeight);
         subLocationComboBox.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
 
@@ -269,6 +280,7 @@ public class MainForm extends JFrame {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });
+
 
         /* Minimap Interface */
 
@@ -297,6 +309,7 @@ public class MainForm extends JFrame {
 
         creatureName.setBounds(0, 0, creatureNameWidth, creatureNameHeight);
         creatureImgContainer.setBounds(0, 10, creatureImgContainerWidth, creatureImgContainerHeight);
+
 
         /* Event Log Interface */
         JLabel eventlogName = new JLabel("Event Log");
@@ -340,8 +353,9 @@ public class MainForm extends JFrame {
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
         DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
+        DefaultListModel listModelForEventLog = new DefaultListModel();
 
-        JList<String> eventLog = new JList<String>();
+        JList<String> eventLog1 = new JList<String>(listModelForEventLog);
         JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
         JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
 
@@ -361,6 +375,8 @@ public class MainForm extends JFrame {
         JButton attackButton = new JButton("attack");
 
         //позиционирование и масштабирование элементов
+
+        //label
         labelHitPoints.setBounds(344, 144, 140, 40);
         labelManaPoints.setBounds(344, 154, 40, 40);
         labelStaminaPoints.setBounds(344, 164, 40, 40);
@@ -369,14 +385,19 @@ public class MainForm extends JFrame {
         labelIntelligence.setBounds(344, 194, 40, 40);
         labelDialogWindowNpc.setBounds(1000, 750, 639, 50);
 
+        //button
         attackButton.setBounds(404, 104, 44, 44);
 
+        //Jlist
         actionsOnLocation.setBounds(600, 100, 400, 200);
         actionsOnDialog.setBounds(600, 100, 400, 200);
+        eventLog1.setBounds(600, 900, 900, 500);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
 
+
         /* Добавление элементов на main панель */
+
 
 //        JLayeredPane.putLayer(mainScreenImgContainer, 1);
 //        JLayeredPane.putLayer(menuButton, 2);
@@ -407,8 +428,9 @@ public class MainForm extends JFrame {
         mainPanel.add(locationsMainPanel);
         mainPanel.add(minimapMainPanel);
         mainPanel.add(creatureMainPanel);
-        mainPanel.add(eventlogMainPanel);
-
+//        mainPanel.add(eventlogMainPanel);
+        eventLog1.setBounds(700,1000,500,4000);
+        mainPanel.add(eventLog1);
         heroMainPanel.add(heroName);
         heroMainPanel.add(heroImgContainer);
 
@@ -447,8 +469,8 @@ public class MainForm extends JFrame {
         settingsPanel.add(settingsGroupButtonPanel);
 
         mainPanel.add(backButton);
-        actionsOnDialog.setVisible(false);
 
+        actionsOnDialog.setVisible(false);
 
         subLocationComboBox.addActionListener(new ActionListener() {
             @Override
@@ -482,6 +504,9 @@ public class MainForm extends JFrame {
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
 
+
+        //действия на локации
+
         actionsOnLocation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -498,17 +523,23 @@ public class MainForm extends JFrame {
                 }
             }
         });
-
+        //действия в диалоге
         actionsOnDialog.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                for (Node i : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
+                for (Node dialogNode : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
 
-                    if (actionsOnDialog.getSelectedValue().equals(String.valueOf(i.getKey()))) {
+                    if (actionsOnDialog.getSelectedValue().equals(String.valueOf(dialogNode.getKey()))) {
+                        listModelForEventLog.addElement(dialogNode.getValue());
+                        if (dialogNode.getQuest() != null) {
+                            hero.getQuests().add(dialogNode.getQuest());
+                            listModelForEventLog.addElement("Вы взяли квест" + " \"" + dialogNode.getQuest().getQuestDescription() + "\" ");
 
-                        hero.getSubLocation().getNpc().getDialog().setCurrentNode(i);
+                        }
+
+                        hero.getSubLocation().getNpc().getDialog().setCurrentNode(dialogNode);
                         listModelForActionsOnDialog.removeAllElements();
                         break;
 
@@ -626,7 +657,7 @@ public class MainForm extends JFrame {
             }
 
             @Override
-            public void mouseExited (MouseEvent e) {
+            public void mouseExited(MouseEvent e) {
                 super.mouseEntered(e);
 
                 music.stop();
@@ -684,6 +715,23 @@ public class MainForm extends JFrame {
             }
         });
 
+
+        // drug and drop!
+
+        JTable table = new JTable(new InventoryModel(true, hero.getPlayerInventory().getMainBackpack()));
+        table.setDefaultRenderer(Stuff.class, new ImageTextCellRenderer());
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setDragEnabled(true);
+        table.setTransferHandler(new TableTransferHandler(table));
+
+        table.setRowSelectionAllowed(false);
+
+        table.setBounds(950, 400, 800, 400);
+
+        mainPanel.add(table);
+        // drug and drop!
+
+        // выведем окно на экран
         /* Обработчики кнопки возвращения к игре */
         backButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -712,8 +760,18 @@ public class MainForm extends JFrame {
             }
         });
 
-        repaint();
-        revalidate();
+
         music.play("src/res/audio/gameExit.wav");
+
+
     }
+
+
+    // Класс отображения объекта в ячейке таблицы
+
+
+
 }
+
+
+
