@@ -2,13 +2,15 @@ package Game.Stuffs.StuffSubs.Equipments;
 
 import Game.Stuffs.StuffSubs.Equipment;
 
+import javax.swing.*;
+
 public class Weapon extends Equipment {
     private int damage;
     private int staminaRequirement;
-    public Weapon(int id, int price, int durability, int damage, int staminaRequirement) {
-        this.id = id;
-        this.price = price;
-        this.durability = durability;
+
+
+    public Weapon(int id, String description, int price, ImageIcon texture, int durability, int damage, int staminaRequirement) {
+        super(id, description, price, texture, durability);
         this.damage = damage;
         this.staminaRequirement = staminaRequirement;
     }

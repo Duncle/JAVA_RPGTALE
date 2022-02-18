@@ -1,26 +1,38 @@
 package Game;
 
 import Game.Creatures.Hero;
+import Game.Stuffs.Stuff;
+import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.util.Set;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class MainForm extends JFrame {
 
     private JLayeredPane mainPanel = new JLayeredPane();
+    private JPanel characterPanel = new JPanel();
     private JPanel pauseMenuPanel = new JPanel();
 
 
     public MainForm(Hero hero) throws IOException {
+
+
+        characterPanel.setBackground(new Color(0xCC, 0xCC, 0xCC));
+
+
         /* Определение размеров окна и позиционирование по центру экрана */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
@@ -142,28 +154,11 @@ public class MainForm extends JFrame {
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
 
-
-
-
         subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
 
         mainPanel.add(subLocationComboBox, 0);
 
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
-        subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
-                                                          final boolean cellHasFocus) {
-
-                if (index == -1) {
-                    value = "Доступно для перемещения";
-                }
-
-                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            }
-        });
-
-
 
 
         /* Minimap Interface */
@@ -197,37 +192,12 @@ public class MainForm extends JFrame {
         mainPanel.add(characterName);
         mainPanel.add(characterImgContainer);
 
-        /* Event Log Interface */
-        JLabel eventlogName = new JLabel("Event Log");
-        JTextArea eventlogText = new JTextArea("Чел");
-        eventlogName.setFont(new Font("Monaco", Font.PLAIN, 32));
-        eventlogText.setFont(new Font("Monaco", Font.PLAIN, 20));
-
-        eventlogName.setForeground(Color.WHITE);
-        eventlogText.setForeground(Color.WHITE);
-        eventlogText.setBackground(Color.BLACK);
-        eventlogText.setMargin(new Insets(70, 20, 10, 10));
-
-        eventlogName.setBounds(screenSize.width - eventlogTextWidth / 2 - 50, screenSize.height - eventlogTextHeight - 45, eventlogNametWidth, eventlogNameHeight);
-        eventlogText.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
-
-        String[] eventlogEvents = {"Событие 1", "Событие 2 (текст)", "Василий Дмитрич"};
-
-        String textBuffer = "";
-        for (int i = 0; i < eventlogEvents.length; i++) {
-            textBuffer += eventlogEvents[i] + "\n\n\n";
-        }
-        eventlogText.setText(textBuffer);
-        System.out.println(textBuffer);
-
-        mainPanel.add(eventlogName);
-        mainPanel.add(eventlogText);
-
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
         DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
+        DefaultListModel listModelForEventLog = new DefaultListModel();
 
-        JList<String> eventLog = new JList<String>();
+        JList<String> eventLog = new JList<String>(listModelForEventLog);
         JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
         JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
 
@@ -248,6 +218,8 @@ public class MainForm extends JFrame {
 
 
         //позиционирование и масштабирование элементов
+
+        //label
         labelHitPoints.setBounds(344, 144, 140, 40);
         labelManaPoints.setBounds(344, 154, 40, 40);
         labelStaminaPoints.setBounds(344, 164, 40, 40);
@@ -256,12 +228,16 @@ public class MainForm extends JFrame {
         labelIntelligence.setBounds(344, 194, 40, 40);
         labelDialogWindowNpc.setBounds(1000, 750, 639, 50);
 
+        //button
         attackButton.setBounds(404, 104, 44, 44);
 
+        //Jlist
         actionsOnLocation.setBounds(600, 100, 400, 200);
         actionsOnDialog.setBounds(600, 100, 400, 200);
+        eventLog.setBounds(600, 900, 900, 500);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
+
 
         /* Добавление элементов на main панель */
         mainPanel.add(labelHitPoints, 0);
@@ -272,11 +248,38 @@ public class MainForm extends JFrame {
         mainPanel.add(labelIntelligence, 0);
         mainPanel.add(labelDialogWindowNpc, 0);
         mainPanel.add(attackButton, 0);
-
+        mainPanel.add(eventLog, 0);
         mainPanel.add(actionsOnLocation, 0);
         mainPanel.add(actionsOnDialog, 0);
 
+        labelAgility.setTransferHandler(new TransferHandler("icon"));
+        labelStrength.setTransferHandler(new TransferHandler("icon"));
+        labelHitPoints.setTransferHandler(new TransferHandler("icon"));
+
+
         actionsOnDialog.setVisible(false);
+
+        characterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+
+            }
+        });
+
+        subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                          final boolean cellHasFocus) {
+
+                if (index == -1) {
+                    value = "Доступно для перемещения";
+                }
+
+                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            }
+        });
 
         subLocationComboBox.addActionListener(new ActionListener() {
             @Override
@@ -310,7 +313,7 @@ public class MainForm extends JFrame {
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
 
-
+        //действия на локации
         actionsOnLocation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -329,17 +332,23 @@ public class MainForm extends JFrame {
                 }
             }
         });
-
+        //действия в диалоге
         actionsOnDialog.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                for (Node i : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
+                for (Node dialogNode : hero.getSubLocation().getNpc().getDialog().getCurrentNode().getNextNodes()) {
 
-                    if (actionsOnDialog.getSelectedValue().equals(String.valueOf(i.getKey()))) {
+                    if (actionsOnDialog.getSelectedValue().equals(String.valueOf(dialogNode.getKey()))) {
+                        listModelForEventLog.addElement(dialogNode.getValue());
+                        if (dialogNode.getQuest() != null) {
+                            hero.getQuests().add(dialogNode.getQuest());
+                            listModelForEventLog.addElement("Вы взяли квест" + " \"" + dialogNode.getQuest().getQuestDescription() + "\" ");
 
-                        hero.getSubLocation().getNpc().getDialog().setCurrentNode(i);
+                        }
+
+                        hero.getSubLocation().getNpc().getDialog().setCurrentNode(dialogNode);
                         listModelForActionsOnDialog.removeAllElements();
                         break;
 
@@ -396,5 +405,70 @@ public class MainForm extends JFrame {
             }
         });
 
+
+        // dnd
+
+
+
+
+        JTable table = new JTable(new InventoryModel(true, hero.getPlayerInventory().getMainBackpack()));
+        table.setDefaultRenderer(Stuff.class,new ImageTextCellRenderer());
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setDragEnabled(true);
+        table.setTransferHandler(new TableTransferHandler(table));
+
+        table.setRowSelectionAllowed(false);
+
+
+
+
+        table.setBounds(950, 400, 800, 400);
+
+        mainPanel.add(table);
+
+
+        // выведем окно на экран
+
+
+        mainPanel.setVisible(true);
+
     }
+
+    class ImageTextCell
+    {
+        Weapon www ;
+        public Icon   icon = www.texture;
+        public String text;
+        // Конструкторы
+        public ImageTextCell(String text) {
+            this (text, null);
+        }
+        public ImageTextCell(String text, Icon icon) {
+            this.icon = icon;
+            this.text = text;
+        }
+    }
+    // Класс отображения объекта в ячейке таблицы
+    class ImageTextCellRenderer extends DefaultTableCellRenderer
+    {
+        // Метод получения компонента для прорисовки
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            // Объект прорисовки
+            Stuff weapon = (Stuff) value;
+
+            // Надпись от базового класса
+            JLabel label =  new JLabel();
+            // Размещение значка
+            label.setIcon(weapon.texture);
+            // Выравнивание
+            if (column == 2)
+                label.setHorizontalAlignment(JLabel.RIGHT);
+            else
+                label.setHorizontalAlignment(JLabel.LEFT);
+            return label;
+        }
+    }
+
 }
+

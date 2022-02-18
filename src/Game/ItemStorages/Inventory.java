@@ -2,16 +2,23 @@ package Game.ItemStorages;
 
 import Game.Stuffs.Stuff;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
-    private List<Stuff> items;
+    ArrayList<ArrayList<Stuff>> mainBackpack = new ArrayList<ArrayList<Stuff>>( );
 
-    public List<Stuff> getItems() {
-        return items;
+
+    public Inventory(ArrayList<ArrayList<Stuff>> mainBackpack) {
+
+        this.mainBackpack = mainBackpack;
     }
 
-    public void setItems(List<Stuff> items) {
-        this.items = items;
+    public ArrayList<ArrayList<Stuff>> getMainBackpack() {
+        return mainBackpack;
+    }
+
+    public void setMainBackpack(ArrayList<ArrayList<Stuff>> mainBackpack) {
+        this.mainBackpack = mainBackpack;
     }
 }
