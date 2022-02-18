@@ -336,6 +336,16 @@ public class MainForm extends JFrame {
 
         eventlogText.setText(textBuffer);
         System.out.println(textBuffer);
+        /* Character Interface */
+
+        JTable table = new JTable(new InventoryModel(true, hero.getPlayerInventory().getMainBackpack()));
+        table.setDefaultRenderer(Stuff.class, new ImageTextCellRenderer());
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setDragEnabled(true);
+        table.setTransferHandler(new TableTransferHandler(table));
+        table.setRowSelectionAllowed(false);
+        table.setBounds(675, 50, 800, 400);
+table.setOpaque(false);
 
         /* Settings interface */
         JButton controlsButton = new JButton("Управление");
@@ -349,6 +359,7 @@ public class MainForm extends JFrame {
         soundButton.setBounds(0, menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
         authorsButton.setBounds(0, menuButtonsHeight * 2, menuButtonsWidth, menuButtonsHeight);
         exitSettingsButton.setBounds(0, menuButtonsHeight * 3, menuButtonsWidth, menuButtonsHeight);
+
 
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
@@ -429,7 +440,7 @@ public class MainForm extends JFrame {
         mainPanel.add(minimapMainPanel);
         mainPanel.add(creatureMainPanel);
 //        mainPanel.add(eventlogMainPanel);
-        eventLog1.setBounds(700,1000,500,4000);
+        eventLog1.setBounds(700, 1000, 500, 4000);
         mainPanel.add(eventLog1);
         heroMainPanel.add(heroName);
         heroMainPanel.add(heroImgContainer);
@@ -459,6 +470,9 @@ public class MainForm extends JFrame {
 
         mainPanel.add(actionsOnLocation);
         mainPanel.add(actionsOnDialog);
+
+        //Character
+        characterPanel.add(table);
 
         //Settings
         settingsGroupButtonPanel.add(controlsButton);
@@ -717,21 +731,6 @@ public class MainForm extends JFrame {
         });
 
 
-        // drug and drop!
-
-        JTable table = new JTable(new InventoryModel(true, hero.getPlayerInventory().getMainBackpack()));
-        table.setDefaultRenderer(Stuff.class, new ImageTextCellRenderer());
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        table.setDragEnabled(true);
-        table.setTransferHandler(new TableTransferHandler(table));
-
-        table.setRowSelectionAllowed(false);
-
-        table.setBounds(750, 50, 800, 400);
-
-        characterPanel.add(table);
-        // drug and drop!
-
         // выведем окно на экран
         /* Обработчики кнопки возвращения к игре */
         backButton.addMouseListener(new MouseAdapter() {
@@ -756,6 +755,8 @@ public class MainForm extends JFrame {
                 mapPanel.setVisible(false);
                 settingsPanel.setVisible(false);
                 blackoutPanel.setVisible(false);
+                characterPanel.setVisible(false);
+
                 //revalidate();
                 //repaint();
             }
@@ -769,7 +770,6 @@ public class MainForm extends JFrame {
 
 
     // Класс отображения объекта в ячейке таблицы
-
 
 
 }
