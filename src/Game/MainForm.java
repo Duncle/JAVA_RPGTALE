@@ -4,8 +4,12 @@ import Game.Creatures.Hero;
 import Game.Stuffs.Stuff;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
+import Game.Utils.Music;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 
@@ -13,41 +17,144 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.net.MalformedURLException;
+import java.util.Set;
+import java.net.URL;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class MainForm extends JFrame {
-
-    private JLayeredPane mainPanel = new JLayeredPane();
-    private JPanel characterPanel = new JPanel();
-    private JPanel pauseMenuPanel = new JPanel();
+    private JLayeredPane rootPanel = getLayeredPane();
 
 
     public MainForm(Hero hero) throws IOException {
 
+        setTitle("RPGTALE");
 
-        characterPanel.setBackground(new Color(0xCC, 0xCC, 0xCC));
-
+        /* Cтартовая музыка */
+        Music music = new Music();
 
         /* Определение размеров окна и позиционирование по центру экрана */
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screenSize.width, screenSize.height);
         setLocationRelativeTo(null);
         setUndecorated(true);
-        mainPanel.setLayout(null);
-        setContentPane(mainPanel);
+        rootPanel.setLayout(null);
+        //setContentPane(mainPanel);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        /* Создание основных панелей */
+        JPanel bgPanel = new JPanel();
+
+        JPanel mainPanel = new JPanel();
+        JPanel heroMainPanel = new JPanel();
+        JPanel heroStateMainPanel = new JPanel();
+        JPanel heroActionsMainPanel = new JPanel();
+        JPanel locationsMainPanel = new JPanel();
+        JPanel minimapMainPanel = new JPanel();
+        JPanel creatureMainPanel = new JPanel();
+        JPanel eventlogMainPanel = new JPanel();
+
+        JPanel navbarPanel = new JPanel();
+
+        JPanel pauseMenuPanel = new JPanel();
+        JPanel characterPanel = new JPanel();
+        JPanel questPanel = new JPanel();
+        JPanel mapPanel = new JPanel();
+        JPanel settingsPanel = new JPanel();
+
+        JPanel blackoutPanel = new JPanel();
+
+        bgPanel.setLayout(null);
+        mainPanel.setLayout(null);
+        navbarPanel.setLayout(null);
+        pauseMenuPanel.setLayout(null);
+        characterPanel.setLayout(null);
+        questPanel.setLayout(null);
+        mapPanel.setLayout(null);
+        settingsPanel.setLayout(null);
+        blackoutPanel.setLayout(null);
+        heroMainPanel.setLayout(null);
+        heroStateMainPanel.setLayout(null);
+        heroActionsMainPanel.setLayout(null);
+        locationsMainPanel.setLayout(null);
+        minimapMainPanel.setLayout(null);
+        creatureMainPanel.setLayout(null);
+        eventlogMainPanel.setLayout(null);
+
+        mainPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+
+        bgPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        navbarPanel.setBounds(0, 0, screenSize.width, 40);
+        pauseMenuPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        characterPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        questPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        mapPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        settingsPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+        blackoutPanel.setBounds(0, 0, screenSize.width, screenSize.height);
+
+        mainPanel.setOpaque(false);
+        heroMainPanel.setOpaque(false);
+        heroStateMainPanel.setOpaque(false);
+        heroActionsMainPanel.setOpaque(false);
+        locationsMainPanel.setOpaque(false);
+        minimapMainPanel.setOpaque(false);
+        creatureMainPanel.setOpaque(false);
+        eventlogMainPanel.setOpaque(false);
+
+        bgPanel.setOpaque(false);
+
+        navbarPanel.setOpaque(false);
+        pauseMenuPanel.setOpaque(false);
+        characterPanel.setOpaque(false);
+        questPanel.setOpaque(false);
+        mapPanel.setOpaque(false);
+        settingsPanel.setOpaque(false);
+
+        blackoutPanel.setOpaque(false);
+        rootPanel.setOpaque(false);
+
+        pauseMenuPanel.setVisible(false);
+        characterPanel.setVisible(false);
+        questPanel.setVisible(false);
+        mapPanel.setVisible(false);
+        settingsPanel.setVisible(false);
+        blackoutPanel.setVisible(false);
+
+        rootPanel.add(mainPanel, new Integer(5));
+        rootPanel.add(bgPanel, new Integer(1));
+        rootPanel.add(navbarPanel, new Integer(10));
+        rootPanel.add(pauseMenuPanel, new Integer(7));
+        rootPanel.add(characterPanel, new Integer(10));
+        rootPanel.add(questPanel, new Integer(10));
+        rootPanel.add(mapPanel, new Integer(10));
+        rootPanel.add(settingsPanel, new Integer(10));
+        rootPanel.add(blackoutPanel, new Integer(3));
+
         /* Импорт изображений */
-        ImageIcon mainScreenImg = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
+        ImageIcon mainScreenBG = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
         ImageIcon heroImg = new ImageIcon(ImageIO.read(new File("src/res/img/NegrTest.png")));
         ImageIcon minimapImg = new ImageIcon(ImageIO.read(new File("src/res/img/minimap.png")));
-        ImageIcon characterImg = new ImageIcon(ImageIO.read(new File("src/res/img/charImgTest.png")));
+        ImageIcon creatureImg = new ImageIcon(ImageIO.read(new File("src/res/img/charImgTest.png")));
+        ImageIcon characterPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/characterList.png")));
+        ImageIcon questPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/questBG.jpg")));
+        ImageIcon mapPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/mapBG.jpg")));
+        ImageIcon settingsPanelBG = new ImageIcon(ImageIO.read(new File("src/res/img/settingsBG.png")));
+        ImageIcon blackoutBG = new ImageIcon(ImageIO.read(new File("src/res/img/blackoutBG90.png")));
+
+        /* Импорт аудио */
+        URL pauseMenuMusic = getClass().getClassLoader().getResource("src/res/audio/pauseMenuElemClick.mp3");
 
         /* Гравитационная постоянная */
         int pauseButtonWidth = screenSize.width / 5;
@@ -59,13 +166,10 @@ public class MainForm extends JFrame {
         int heroNameWidth = 300;
         int heroNameHeight = 32;
 
-        int subLocationComboBoxWidth = menuButtonsWidth;
-        int subLocationComboBoxHeight = menuButtonsHeight;
+        int creatureNameWidth = 300;
+        int creatureNameHeight = 32;
 
-        int characterNameWidth = 300;
-        int characterNameHeight = 32;
-
-        int eventlogNametWidth = 200;
+        int eventlogNameWidth = 200;
         int eventlogNameHeight = 40;
         int eventlogTextWidth = screenSize.width / 3;
         int eventlogTextHeight = screenSize.height / 3;
@@ -73,10 +177,13 @@ public class MainForm extends JFrame {
         /* Добавление PNG картинки */
 
         JLabel mainScreenImgContainer = new JLabel("");
-        mainScreenImgContainer.setBounds(0, 0, mainScreenImg.getIconWidth(), mainScreenImg.getIconHeight());
-        mainScreenImgContainer.setIcon(mainScreenImg);
+        mainScreenImgContainer.setBounds(0, 0, mainScreenBG.getIconWidth(), mainScreenBG.getIconHeight());
+        mainScreenImgContainer.setIcon(mainScreenBG);
 
-        //mainPanel.add(mainScreenImgContainer, 0);
+        /* Добавление blackout */
+        JLabel blackoutContainer = new JLabel("");
+        blackoutContainer.setBounds(0, 0, blackoutBG.getIconWidth(), blackoutBG.getIconHeight());
+        blackoutContainer.setIcon(blackoutBG);
 
         /* Добавление Nav Bar */
         JButton menuButton = new JButton("Меню");
@@ -90,16 +197,11 @@ public class MainForm extends JFrame {
         questButton.setBounds(menuButtonsWidth * 2, 0, menuButtonsWidth, menuButtonsHeight);
         mapButton.setBounds(menuButtonsWidth * 3, 0, menuButtonsWidth, menuButtonsHeight);
         settingsButton.setBounds(menuButtonsWidth * 4, 0, menuButtonsWidth, menuButtonsHeight);
-        mainPanel.add(menuButton, 0);
-        mainPanel.add(characterButton, 0);
-        mainPanel.add(questButton, 0);
-        mainPanel.add(mapButton, 0);
-        mainPanel.add(settingsButton, 0);
 
-        setContentPane(mainPanel);
-        mainPanel.setVisible(true);
-        revalidate();
-        repaint();
+        /* Добавление кнопки возвращения к игре */
+        JButton backButton = new JButton("Вернуться в игру");
+
+        backButton.setBounds(screenSize.width - menuButtonsWidth, screenSize.height - menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
 
         /* Добавление PauseMenu */
         // Темный фон для улучшения видимости меню паузы
@@ -114,20 +216,12 @@ public class MainForm extends JFrame {
         continueButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 - 30, pauseButtonWidth, pauseButtonHeight);
         exitButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
 
-        mainPanel.add(continueButton, 0);
-        mainPanel.add(exitButton, 0);
-
-        continueButton.setVisible(false);
-        exitButton.setVisible(false);
-
         //mainPanel.add(blackout, 3);
 
         // Интерактивные действия кнопок
 
-
         /* Hero Panel Interface */
         JLabel heroName = new JLabel("Hero Display");
-
         JLabel heroImgContainer = new JLabel("");
         heroName.setFont(new Font("Monaco", Font.PLAIN, 32));
 
@@ -141,11 +235,21 @@ public class MainForm extends JFrame {
         int heroImgContainerWidth = heroImg.getIconWidth();
         int heroImgContainerHeight = heroImg.getIconHeight();
 
-        heroName.setBounds(0, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
-        heroImgContainer.setBounds(0, menuButtonsHeight + heroNameHeight + 20, heroImgContainerWidth, heroImgContainerHeight);
+        heroMainPanel.setBounds(0, menuButtonsHeight + 20, 300, 300);
 
-        mainPanel.add(heroName);
-        mainPanel.add(heroImgContainer);
+        heroName.setBounds(0, 0, creatureNameWidth, creatureNameHeight);
+        heroImgContainer.setBounds(0, 10, heroImgContainerWidth, heroImgContainerHeight);
+
+        /* Hero Actions Interface */
+        JButton heroFirstAction = new JButton("Действие 1");
+        JButton heroSecondAction = new JButton("Действие 2");
+        JButton heroThirdAction = new JButton("Действие 3");
+
+        heroActionsMainPanel.setBounds(0, 500, menuButtonsWidth * 3, menuButtonsHeight * 3);
+
+        heroFirstAction.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
+        heroSecondAction.setBounds(0, menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
+        heroThirdAction.setBounds(0, menuButtonsHeight * 2, menuButtonsWidth, menuButtonsHeight);
 
         /* Location Picker Interface */
         //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
@@ -154,50 +258,86 @@ public class MainForm extends JFrame {
         JComboBox subLocationComboBox = new JComboBox(hero.avaliableSublocationtsToMove(hero, cbModel));
 
 
-        subLocationComboBox.setBounds(0, screenSize.height - minimapImg.getIconHeight() - subLocationComboBoxHeight - 20, subLocationComboBoxWidth, subLocationComboBoxHeight);
-
-        mainPanel.add(subLocationComboBox, 0);
+        locationsMainPanel.setBounds(0, screenSize.height - minimapImg.getIconHeight() - menuButtonsHeight - 20, menuButtonsWidth, menuButtonsHeight);
+        subLocationComboBox.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
 
         // getListCellRendererComponent- визуальное оформление комбобокса заменяем заголовок на свой -доступно для перемещения
+        subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected,
+                                                          final boolean cellHasFocus) {
+
+                if (index == -1) {
+                    value = "Доступно для перемещения";
+                }
+
+                return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            }
+        });
 
 
         /* Minimap Interface */
 
         JLabel minimapImgContainer = new JLabel("");
 
-        minimapImgContainer.setBounds(0, screenSize.height - 200, 200, 200);
+        minimapMainPanel.setBounds(0, screenSize.height - 200, 200, 200);
+
+        minimapImgContainer.setBounds(0, 0, 200, 200);
         minimapImgContainer.setIcon(minimapImg);
 
-        mainPanel.add(minimapImgContainer, 0);
+        /* Creature Display Interface */
+        JLabel creatureName = new JLabel("Creature Display");
 
-        /* Character Display Interface */
-        JLabel characterName = new JLabel("Character Display");
+        JLabel creatureImgContainer = new JLabel("");
+        creatureName.setFont(new Font("Monaco", Font.PLAIN, 32));
 
-        JLabel characterImgContainer = new JLabel("");
-        characterName.setFont(new Font("Monaco", Font.PLAIN, 32));
+        creatureImgContainer.setBounds(0, 0, 50, 50);
+        creatureImgContainer.setIcon(creatureImg);
 
-        characterImgContainer.setBounds(0, 0, 50, 50);
-        characterImgContainer.setIcon(characterImg);
+        creatureName.setForeground(Color.BLACK);
 
-        //mainPanel.add(mainScreenImgContainer, 0);
+        int creatureImgContainerWidth = creatureImg.getIconWidth();
+        int creatureImgContainerHeight = creatureImg.getIconHeight();
 
-        characterName.setForeground(Color.BLACK);
+        creatureMainPanel.setBounds(screenSize.width - creatureNameWidth - 100 + creatureNameWidth / 2 - creatureImgContainerWidth / 2, menuButtonsHeight + 100, creatureImgContainerWidth, creatureImgContainerHeight);
 
-        int characterImgContainerWidth = characterImg.getIconWidth();
-        int characterImgContainerHeight = characterImg.getIconHeight();
+        creatureName.setBounds(0, 0, creatureNameWidth, creatureNameHeight);
+        creatureImgContainer.setBounds(0, 10, creatureImgContainerWidth, creatureImgContainerHeight);
 
-        characterName.setBounds(screenSize.width - characterNameWidth - 100, menuButtonsHeight + 30, characterNameWidth, characterNameHeight);
-        characterImgContainer.setBounds(screenSize.width - characterNameWidth - 100 + characterNameWidth / 2 - characterImgContainerWidth / 2, menuButtonsHeight + 100, characterImgContainerWidth, characterImgContainerHeight);
 
-        mainPanel.add(characterName);
-        mainPanel.add(characterImgContainer);
+        /* Event Log Interface */
+        JLabel eventlogName = new JLabel("Event Log");
+        JTextArea eventlogText = new JTextArea("Чел");
+        eventlogName.setFont(new Font("Monaco", Font.PLAIN, 32));
+        eventlogText.setFont(new Font("Monaco", Font.PLAIN, 20));
+
+        eventlogName.setForeground(Color.WHITE);
+        eventlogText.setForeground(Color.WHITE);
+        eventlogText.setBackground(Color.BLACK);
+        eventlogText.setMargin(new Insets(70, 20, 10, 10));
+
+        eventlogMainPanel.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
+
+        eventlogName.setBounds(0, 0, eventlogNameWidth, eventlogNameHeight);
+        eventlogText.setBounds(0, 10, eventlogTextWidth, eventlogTextHeight);
+
+        String[] eventlogEvents = {"Событие 1", "Событие 2 (текст)", "Василий Дмитрич"};
+
+        String textBuffer = "";
+        for (int i = 0; i < eventlogEvents.length; i++) {
+            textBuffer += eventlogEvents[i] + "\n\n\n";
+        }
+
+        eventlogText.setText(textBuffer);
+        System.out.println(textBuffer);
+
 
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
         DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
         DefaultListModel listModelForEventLog = new DefaultListModel();
 
-        JList<String> eventLog = new JList<String>(listModelForEventLog);
+        JList<String> eventLog1 = new JList<String>(listModelForEventLog);
         JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
         JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
 
@@ -216,7 +356,6 @@ public class MainForm extends JFrame {
         //кнопки
         JButton attackButton = new JButton("attack");
 
-
         //позиционирование и масштабирование элементов
 
         //label
@@ -234,39 +373,76 @@ public class MainForm extends JFrame {
         //Jlist
         actionsOnLocation.setBounds(600, 100, 400, 200);
         actionsOnDialog.setBounds(600, 100, 400, 200);
-        eventLog.setBounds(600, 900, 900, 500);
+        eventLog1.setBounds(600, 900, 900, 500);
         //шрифт
         setFont(new Font("Dialog", Font.PLAIN, 14));
 
 
         /* Добавление элементов на main панель */
-        mainPanel.add(labelHitPoints, 0);
-        mainPanel.add(labelManaPoints, 0);
-        mainPanel.add(labelStaminaPoints, 0);
-        mainPanel.add(labelStrength, 0);
-        mainPanel.add(labelAgility, 0);
-        mainPanel.add(labelIntelligence, 0);
-        mainPanel.add(labelDialogWindowNpc, 0);
-        mainPanel.add(attackButton, 0);
-        mainPanel.add(eventLog, 0);
-        mainPanel.add(actionsOnLocation, 0);
-        mainPanel.add(actionsOnDialog, 0);
 
-        labelAgility.setTransferHandler(new TransferHandler("icon"));
-        labelStrength.setTransferHandler(new TransferHandler("icon"));
-        labelHitPoints.setTransferHandler(new TransferHandler("icon"));
 
+//        JLayeredPane.putLayer(mainScreenImgContainer, 1);
+//        JLayeredPane.putLayer(menuButton, 2);
+//        JLayeredPane.putLayer(characterButton, 2);
+//        JLayeredPane.putLayer(questButton, 2);
+//        JLayeredPane.putLayer(mapButton, 2);
+//        JLayeredPane.putLayer(settingsButton, 2);
+
+        bgPanel.add(mainScreenImgContainer);
+        blackoutPanel.add(blackoutContainer);
+
+        navbarPanel.add(menuButton);
+        navbarPanel.add(characterButton);
+        navbarPanel.add(questButton);
+        navbarPanel.add(mapButton);
+        navbarPanel.add(settingsButton);
+
+        pauseMenuPanel.add(continueButton);
+        pauseMenuPanel.add(exitButton);
+
+        //Добавление панелей-контейнеров на главный экран
+        mainPanel.add(heroMainPanel);
+        mainPanel.add(heroStateMainPanel);
+        mainPanel.add(heroActionsMainPanel);
+        mainPanel.add(locationsMainPanel);
+        mainPanel.add(minimapMainPanel);
+        mainPanel.add(creatureMainPanel);
+//        mainPanel.add(eventlogMainPanel);
+        eventLog1.setBounds(700,1000,500,4000);
+mainPanel.add(eventLog1);
+        heroMainPanel.add(heroName);
+        heroMainPanel.add(heroImgContainer);
+
+        heroActionsMainPanel.add(heroFirstAction);
+        heroActionsMainPanel.add(heroSecondAction);
+        heroActionsMainPanel.add(heroThirdAction);
+
+        locationsMainPanel.add(subLocationComboBox);
+
+        minimapMainPanel.add(minimapImgContainer);
+
+        creatureMainPanel.add(creatureName);
+        creatureMainPanel.add(creatureImgContainer);
+
+        eventlogMainPanel.add(eventlogName);
+        eventlogMainPanel.add(eventlogText);
+
+        mainPanel.add(labelHitPoints);
+        mainPanel.add(labelManaPoints);
+        mainPanel.add(labelStaminaPoints);
+        mainPanel.add(labelStrength);
+        mainPanel.add(labelAgility);
+        mainPanel.add(labelIntelligence);
+        mainPanel.add(labelDialogWindowNpc);
+        mainPanel.add(attackButton);
+
+        mainPanel.add(actionsOnLocation);
+        mainPanel.add(actionsOnDialog);
+
+        mainPanel.add(backButton);
 
         actionsOnDialog.setVisible(false);
 
-        characterButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-
-
-            }
-        });
 
         subLocationComboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -313,7 +489,9 @@ public class MainForm extends JFrame {
         //реализация перехода между локациями привыборе пунктов из выпадающего
         // меню циклом проходимся по новой путям новой локации,
 
+
         //действия на локации
+
         actionsOnLocation.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -327,8 +505,6 @@ public class MainForm extends JFrame {
 
                         listModelForActionsOnDialog.addElement(k.getKey());
                     }
-
-
                 }
             }
         });
@@ -367,36 +543,154 @@ public class MainForm extends JFrame {
                         listModelForActionsOnDialog.addElement(k.getKey());
                     }
                 }
-                repaint();
-                revalidate();
             }
         });
 
+        /* Обработчики кнопок навигационного меню */
         menuButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
 
-                continueButton.setVisible(true);
-                exitButton.setVisible(true);
-                revalidate();
-                repaint();
+                music.play("src/res/audio/menuButtonHover.wav");
             }
-        });
 
-        continueButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                continueButton.setVisible(false);
-                exitButton.setVisible(false);
-                revalidate();
-                repaint();
+                pauseMenuPanel.setVisible(true);
+                blackoutPanel.setVisible(true);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        characterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(characterPanelBG);
+                characterPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        questButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(questPanelBG);
+                questPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        mapButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/menuButtonHover.wav");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(mapPanelBG);
+                mapPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        settingsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/longSound.wav");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.stop();
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                mainPanel.setVisible(false);
+                mainScreenImgContainer.setIcon(settingsPanelBG);
+                settingsPanel.setVisible(true);
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
+
+        /* Обработчики кнопок меню паузы */
+        continueButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                music.play("src/res/audio/pauseMenuContinueClick.wav");
+
+                pauseMenuPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
             }
         });
 
         exitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+            }
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -406,69 +700,62 @@ public class MainForm extends JFrame {
         });
 
 
-        // dnd
-
-
-
+        // drug and drop!
 
         JTable table = new JTable(new InventoryModel(true, hero.getPlayerInventory().getMainBackpack()));
-        table.setDefaultRenderer(Stuff.class,new ImageTextCellRenderer());
+        table.setDefaultRenderer(Stuff.class, new ImageTextCellRenderer());
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setDragEnabled(true);
         table.setTransferHandler(new TableTransferHandler(table));
 
         table.setRowSelectionAllowed(false);
 
-
-
-
         table.setBounds(950, 400, 800, 400);
 
         mainPanel.add(table);
-
+        // drug and drop!
 
         // выведем окно на экран
+        /* Обработчики кнопки возвращения к игре */
+        backButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+
+                //music.play("src/res/audio/pauseMenuElemMouseOver.wav");
+                music.play("src/res/audio/Angel.wav");
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                //music.play("src/res/audio/pauseMenuContinueClick.wav");
+                music.play("src/res/audio/gameExit.wav");
+                mainPanel.setVisible(true);
+                mainScreenImgContainer.setIcon(mainScreenBG);
+                characterPanel.setVisible(false);
+                questPanel.setVisible(false);
+                mapPanel.setVisible(false);
+                settingsPanel.setVisible(false);
+                blackoutPanel.setVisible(false);
+                //revalidate();
+                //repaint();
+            }
+        });
 
 
-        mainPanel.setVisible(true);
+        music.play("src/res/audio/gameExit.wav");
+
 
     }
 
-    class ImageTextCell
-    {
-        Weapon www ;
-        public Icon   icon = www.texture;
-        public String text;
-        // Конструкторы
-        public ImageTextCell(String text) {
-            this (text, null);
-        }
-        public ImageTextCell(String text, Icon icon) {
-            this.icon = icon;
-            this.text = text;
-        }
-    }
+
     // Класс отображения объекта в ячейке таблицы
-    class ImageTextCellRenderer extends DefaultTableCellRenderer
-    {
-        // Метод получения компонента для прорисовки
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                       boolean hasFocus, int row, int column) {
-            // Объект прорисовки
-            Stuff weapon = (Stuff) value;
 
-            // Надпись от базового класса
-            JLabel label =  new JLabel();
-            // Размещение значка
-            label.setIcon(weapon.texture);
-            // Выравнивание
-            if (column == 2)
-                label.setHorizontalAlignment(JLabel.RIGHT);
-            else
-                label.setHorizontalAlignment(JLabel.LEFT);
-            return label;
-        }
-    }
+
 
 }
+
+
 

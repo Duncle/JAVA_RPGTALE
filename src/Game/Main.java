@@ -13,7 +13,9 @@ import Game.Stuffs.StuffSubs.Equipments.Armor;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
 
+
 import javax.swing.*;
+
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class Main {
             Node tardenDialogNode1_2_1 = new Node(4, "почему", "я не торговец", Arrays.asList(tardenDialogNode1_2_1_1));
             Node tardenDialogNode1_2_2 = new Node(5, "Где найти торговца", "Хммм,это долгая история /n ты можешь найти его в хижине аутмара", firstQuest);
 
+
             Node tardenDialogNode1_1 = new Node(1, "Здравствуй", "Привет");
             Node tardenDialogNode1_2 = new Node(2, "Что ты продаешь", "ничего", Arrays.asList(tardenDialogNode1_2_1, tardenDialogNode1_2_2));
             Node tardenDialogNode1_3 = new Node(3, "Пока", "Я пошел");
@@ -60,6 +63,10 @@ public class Main {
             //NPC
             NPC tarden = new NPC("Тарден", 32, 15, 24, sword, helmet, firstQuest, tardenDialog);
             NPC jimdjar = new NPC("Джимджар", 27, 2, 15, axe, helmet, secondQuest, tardenDialog);
+
+
+//        Dialog  JimdjarDialog = new Dialog(dialogForJimdjar);
+
 
             //Enemy
             Enemy gnoll = new Enemy(10, 10, 10, sword, helmet, firstQuest);
@@ -81,6 +88,7 @@ public class Main {
             ArrayList<Stuff> mainBackpackRow2 = new ArrayList<>();
             ArrayList<Stuff> mainBackpackRow3 = new ArrayList<>();
             ArrayList<Stuff> mainBackpackRow4 = new ArrayList<>();
+
             mainBackpackRow1.add(sword);
             mainBackpackRow2.add(axe);
             mainBackpackRow3.add(helmet);
@@ -90,7 +98,6 @@ public class Main {
             mainBackpack.add(mainBackpackRow2);
             mainBackpack.add(mainBackpackRow3);
             mainBackpack.add(mainBackpackRow4);
-
 
             System.out.println(sword.getClass().getName());
 
@@ -107,5 +114,6 @@ public class Main {
 
 
         });
+
     }
 }
