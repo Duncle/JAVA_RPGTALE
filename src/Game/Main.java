@@ -88,16 +88,31 @@ public class Main {
             ArrayList<Stuff> mainBackpackRow2 = new ArrayList<>();
             ArrayList<Stuff> mainBackpackRow3 = new ArrayList<>();
             ArrayList<Stuff> mainBackpackRow4 = new ArrayList<>();
-
-            mainBackpackRow1.add(sword);
-            mainBackpackRow2.add(axe);
-            mainBackpackRow3.add(helmet);
-            mainBackpackRow4.add(doubleAxe);
+            ArrayList<Stuff> mainBackpackRow5 = new ArrayList<>();
+            ArrayList<Stuff> mainBackpackRow6 = new ArrayList<>();
 
             mainBackpack.add(mainBackpackRow1);
             mainBackpack.add(mainBackpackRow2);
             mainBackpack.add(mainBackpackRow3);
             mainBackpack.add(mainBackpackRow4);
+            mainBackpack.add(mainBackpackRow5);
+            mainBackpack.add(mainBackpackRow6);
+
+            for (int i = 0; i < 6; i++) {
+                mainBackpackRow1.add(null);
+                mainBackpackRow2.add(null);
+                mainBackpackRow3.add(null);
+                mainBackpackRow4.add(null);
+                mainBackpackRow5.add(null);
+                mainBackpackRow6.add(null);
+
+            }
+            mainBackpackRow1.set(0, helmet);
+            mainBackpackRow2.set(0, sword);
+            mainBackpackRow3.set(0, axe);
+            mainBackpackRow4.set(0, doubleAxe);
+            mainBackpackRow5.set(0, warhammer);
+            mainBackpackRow6.set(0, helmet);
 
             System.out.println(sword.getClass().getName());
 

@@ -11,12 +11,15 @@ public class ImageTextCellRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                    boolean hasFocus, int row, int column) {
         // Объект прорисовки
-        Stuff weapon = (Stuff) value;
+        Stuff stuff = (Stuff) value;
 
         // Надпись от базового класса
         JLabel label = new JLabel();
         // Размещение значка
-        label.setIcon(weapon.texture);
+        if(stuff!=null){
+            label.setIcon(stuff.texture);
+        }
+
         // Выравнивание
         if (column == 2)
             label.setHorizontalAlignment(JLabel.RIGHT);
