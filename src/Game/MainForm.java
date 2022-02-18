@@ -361,10 +361,7 @@ public class MainForm extends JFrame {
         //button
         attackButton.setBounds(404, 104, 44, 44);
 
-
-
         /* Добавление элементов на main панель */
-
 
 //        JLayeredPane.putLayer(mainScreenImgContainer, 1);
 //        JLayeredPane.putLayer(menuButton, 2);
