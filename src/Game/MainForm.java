@@ -173,11 +173,6 @@ public class MainForm extends JFrame {
         int creatureNameWidth = 300;
         int creatureNameHeight = 32;
 
-        int eventlogNameWidth = 200;
-        int eventlogNameHeight = 40;
-        int eventlogTextWidth = screenSize.width / 3;
-        int eventlogTextHeight = screenSize.height / 3;
-
         /* Добавление PNG картинки */
 
         JLabel mainScreenImgContainer = new JLabel("");
@@ -247,15 +242,16 @@ public class MainForm extends JFrame {
         heroImgContainer.setBounds(0, 10, heroImgContainerWidth, heroImgContainerHeight);
 
         /* Hero Actions Interface */
-        JButton heroFirstAction = new JButton("Действие 1");
-        JButton heroSecondAction = new JButton("Действие 2");
-        JButton heroThirdAction = new JButton("Действие 3");
 
-        heroActionsMainPanel.setBounds(0, 500, menuButtonsWidth * 3, menuButtonsHeight * 3);
+        heroActionsMainPanel.setBounds(0, 500, menuButtonsWidth, menuButtonsHeight * 3);
 
-        heroFirstAction.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
-        heroSecondAction.setBounds(0, menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
-        heroThirdAction.setBounds(0, menuButtonsHeight * 2, menuButtonsWidth, menuButtonsHeight);
+        DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
+        DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
+        JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
+        JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
+
+        actionsOnLocation.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight * 3);
+        actionsOnDialog.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight * 3);
 
         /* Location Picker Interface */
         //Combobox доступные локации для перемещения, если у локации id некоторого пути !=-1 то добавляем комбобокс, т.е. на эту локацию можно перейти
@@ -312,30 +308,14 @@ public class MainForm extends JFrame {
 
 
         /* Event Log Interface */
-        JLabel eventlogName = new JLabel("Event Log");
-        JTextArea eventlogText = new JTextArea("Чел");
-        eventlogName.setFont(new Font("Monaco", Font.PLAIN, 32));
-        eventlogText.setFont(new Font("Monaco", Font.PLAIN, 20));
 
-        eventlogName.setForeground(Color.WHITE);
-        eventlogText.setForeground(Color.WHITE);
-        eventlogText.setBackground(Color.BLACK);
-        eventlogText.setMargin(new Insets(70, 20, 10, 10));
+        DefaultListModel listModelForEventLog = new DefaultListModel();
 
-        eventlogMainPanel.setBounds(screenSize.width - eventlogTextWidth, screenSize.height - eventlogTextHeight - 50, eventlogTextWidth, eventlogTextHeight);
+        JList<String> eventLog = new JList<String>(listModelForEventLog);
 
-        eventlogName.setBounds(0, 0, eventlogNameWidth, eventlogNameHeight);
-        eventlogText.setBounds(0, 10, eventlogTextWidth, eventlogTextHeight);
+        eventlogMainPanel.setBounds(screenSize.width - screenSize.width / 5, screenSize.height - screenSize.height / 5 - menuButtonsHeight, screenSize.width / 5, screenSize.height / 5);
 
-        String[] eventlogEvents = {"Событие 1", "Событие 2 (текст)", "Василий Дмитрич"};
-
-        String textBuffer = "";
-        for (int i = 0; i < eventlogEvents.length; i++) {
-            textBuffer += eventlogEvents[i] + "\n\n\n";
-        }
-
-        eventlogText.setText(textBuffer);
-        System.out.println(textBuffer);
+        eventLog.setBounds(0, 0, screenSize.width / 5, screenSize.width / 5);
 
         /* Settings interface */
         JButton controlsButton = new JButton("Управление");
@@ -351,13 +331,6 @@ public class MainForm extends JFrame {
         exitSettingsButton.setBounds(0, menuButtonsHeight * 3, menuButtonsWidth, menuButtonsHeight);
 
         /* Sweat experiment area */
-        DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
-        DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
-        DefaultListModel listModelForEventLog = new DefaultListModel();
-
-        JList<String> eventLog1 = new JList<String>(listModelForEventLog);
-        JList<String> actionsOnLocation = new JList<String>(listModelForActionsOnLocation);
-        JList<String> actionsOnDialog = new JList<String>(listModelForActionsOnDialog);
 
         if (hero.getSubLocation().getNpc() != null) {
             listModelForActionsOnLocation.addElement("Поговорить с" + " " + hero.getSubLocation().getNpc().getName() + "ом");
@@ -388,12 +361,6 @@ public class MainForm extends JFrame {
         //button
         attackButton.setBounds(404, 104, 44, 44);
 
-        //Jlist
-        actionsOnLocation.setBounds(600, 100, 400, 200);
-        actionsOnDialog.setBounds(600, 100, 400, 200);
-        eventLog1.setBounds(600, 900, 900, 500);
-        //шрифт
-        setFont(new Font("Dialog", Font.PLAIN, 14));
 
 
         /* Добавление элементов на main панель */
@@ -428,15 +395,13 @@ public class MainForm extends JFrame {
         mainPanel.add(locationsMainPanel);
         mainPanel.add(minimapMainPanel);
         mainPanel.add(creatureMainPanel);
-//        mainPanel.add(eventlogMainPanel);
-        eventLog1.setBounds(700,1000,500,4000);
-        mainPanel.add(eventLog1);
+        mainPanel.add(eventlogMainPanel);
+
         heroMainPanel.add(heroName);
         heroMainPanel.add(heroImgContainer);
 
-        heroActionsMainPanel.add(heroFirstAction);
-        heroActionsMainPanel.add(heroSecondAction);
-        heroActionsMainPanel.add(heroThirdAction);
+        heroActionsMainPanel.add(actionsOnLocation);
+        heroActionsMainPanel.add(actionsOnDialog);
 
         locationsMainPanel.add(subLocationComboBox);
 
@@ -445,8 +410,7 @@ public class MainForm extends JFrame {
         creatureMainPanel.add(creatureName);
         creatureMainPanel.add(creatureImgContainer);
 
-        eventlogMainPanel.add(eventlogName);
-        eventlogMainPanel.add(eventlogText);
+        eventlogMainPanel.add(eventLog);
 
         mainPanel.add(labelHitPoints);
         mainPanel.add(labelManaPoints);
@@ -456,9 +420,6 @@ public class MainForm extends JFrame {
         mainPanel.add(labelIntelligence);
         mainPanel.add(labelDialogWindowNpc);
         mainPanel.add(attackButton);
-
-        mainPanel.add(actionsOnLocation);
-        mainPanel.add(actionsOnDialog);
 
         //Settings
         settingsGroupButtonPanel.add(controlsButton);
@@ -728,7 +689,7 @@ public class MainForm extends JFrame {
 
         table.setBounds(950, 400, 800, 400);
 
-        mainPanel.add(table);
+        //mainPanel.add(table);
         // drug and drop!
 
         // выведем окно на экран
