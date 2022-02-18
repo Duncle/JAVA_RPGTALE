@@ -64,6 +64,8 @@ public class MainForm extends JFrame {
         JPanel mapPanel = new JPanel();
         JPanel settingsPanel = new JPanel();
 
+        JPanel settingsGroupButtonPanel = new JPanel();
+
         JPanel blackoutPanel = new JPanel();
 
         bgPanel.setLayout(null);
@@ -82,11 +84,11 @@ public class MainForm extends JFrame {
         minimapMainPanel.setLayout(null);
         creatureMainPanel.setLayout(null);
         eventlogMainPanel.setLayout(null);
+        settingsGroupButtonPanel.setLayout(null);
 
         mainPanel.setBounds(0, 0, screenSize.width, screenSize.height);
 
         bgPanel.setBounds(0, 0, screenSize.width, screenSize.height);
-        navbarPanel.setBounds(0, 0, screenSize.width, 40);
         pauseMenuPanel.setBounds(0, 0, screenSize.width, screenSize.height);
         characterPanel.setBounds(0, 0, screenSize.width, screenSize.height);
         questPanel.setBounds(0, 0, screenSize.width, screenSize.height);
@@ -102,6 +104,7 @@ public class MainForm extends JFrame {
         minimapMainPanel.setOpaque(false);
         creatureMainPanel.setOpaque(false);
         eventlogMainPanel.setOpaque(false);
+        settingsGroupButtonPanel.setOpaque(false);
 
         bgPanel.setOpaque(false);
 
@@ -121,6 +124,7 @@ public class MainForm extends JFrame {
         mapPanel.setVisible(false);
         settingsPanel.setVisible(false);
         blackoutPanel.setVisible(false);
+        //settingsGroupButtonPanel.setVisible(false);
 
         rootPanel.add(mainPanel, new Integer(5));
         rootPanel.add(bgPanel, new Integer(1));
@@ -182,6 +186,8 @@ public class MainForm extends JFrame {
         JButton mapButton = new JButton("Карта");
         JButton settingsButton = new JButton("Настройки");
 
+        navbarPanel.setBounds(0, 0, screenSize.width, 40);
+
         menuButton.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
         characterButton.setBounds(menuButtonsWidth, 0, menuButtonsWidth, menuButtonsHeight);
         questButton.setBounds(menuButtonsWidth * 2, 0, menuButtonsWidth, menuButtonsHeight);
@@ -200,11 +206,11 @@ public class MainForm extends JFrame {
 //        blackout.setBackground(Color.BLACK);
         // Кнопки "Продолжить" и "Выход"
         JButton continueButton = new JButton("Продолжить");
-        JButton exitButton = new JButton("Выйти");
+        JButton exitPauseMenuButton = new JButton("Выйти");
 
 
         continueButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 - 30, pauseButtonWidth, pauseButtonHeight);
-        exitButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
+        exitPauseMenuButton.setBounds(screenSize.width / 2 - (pauseButtonWidth) / 2, screenSize.height / 2 + 30, pauseButtonWidth, pauseButtonHeight);
 
         //mainPanel.add(blackout, 3);
 
@@ -318,6 +324,19 @@ public class MainForm extends JFrame {
         eventlogText.setText(textBuffer);
         System.out.println(textBuffer);
 
+        /* Settings interface */
+        JButton controlsButton = new JButton("Управление");
+        JButton soundButton = new JButton("Звук");
+        JButton authorsButton = new JButton("Авторы");
+        JButton exitSettingsButton = new JButton("Выход");
+
+        settingsGroupButtonPanel.setBounds(screenSize.width / 2 - menuButtonsWidth / 2, screenSize.height / 2 - menuButtonsHeight * 4 / 2, menuButtonsWidth, menuButtonsHeight * 4);
+
+        controlsButton.setBounds(0, 0, menuButtonsWidth, menuButtonsHeight);
+        soundButton.setBounds(0, menuButtonsHeight, menuButtonsWidth, menuButtonsHeight);
+        authorsButton.setBounds(0, menuButtonsHeight * 2, menuButtonsWidth, menuButtonsHeight);
+        exitSettingsButton.setBounds(0, menuButtonsHeight * 3, menuButtonsWidth, menuButtonsHeight);
+
         /* Sweat experiment area */
         DefaultListModel listModelForActionsOnLocation = new DefaultListModel();
         DefaultListModel listModelForActionsOnDialog = new DefaultListModel();
@@ -366,19 +385,22 @@ public class MainForm extends JFrame {
 //        JLayeredPane.putLayer(mapButton, 2);
 //        JLayeredPane.putLayer(settingsButton, 2);
 
+        //Blackout
         bgPanel.add(mainScreenImgContainer);
         blackoutPanel.add(blackoutContainer);
 
+        //NavBar
         navbarPanel.add(menuButton);
         navbarPanel.add(characterButton);
         navbarPanel.add(questButton);
         navbarPanel.add(mapButton);
         navbarPanel.add(settingsButton);
 
+        //PauseMenu
         pauseMenuPanel.add(continueButton);
-        pauseMenuPanel.add(exitButton);
+        pauseMenuPanel.add(exitPauseMenuButton);
 
-        //Добавление панелей-контейнеров на главный экран
+        //Main screen
         mainPanel.add(heroMainPanel);
         mainPanel.add(heroStateMainPanel);
         mainPanel.add(heroActionsMainPanel);
@@ -416,8 +438,17 @@ public class MainForm extends JFrame {
         mainPanel.add(actionsOnLocation);
         mainPanel.add(actionsOnDialog);
 
+        //Settings
+        settingsGroupButtonPanel.add(controlsButton);
+        settingsGroupButtonPanel.add(soundButton);
+        settingsGroupButtonPanel.add(authorsButton);
+        settingsGroupButtonPanel.add(exitSettingsButton);
+
+        settingsPanel.add(settingsGroupButtonPanel);
+
         mainPanel.add(backButton);
         actionsOnDialog.setVisible(false);
+
 
         subLocationComboBox.addActionListener(new ActionListener() {
             @Override
@@ -580,8 +611,9 @@ public class MainForm extends JFrame {
                 mapPanel.setVisible(true);
                 pauseMenuPanel.setVisible(false);
                 blackoutPanel.setVisible(false);
-                //revalidate();
-                //repaint();
+                removeAll();
+                revalidate();
+                repaint();
             }
         });
 
@@ -605,10 +637,10 @@ public class MainForm extends JFrame {
                 super.mouseClicked(e);
 
                 mainPanel.setVisible(false);
-                mainScreenImgContainer.setIcon(settingsPanelBG);
+                //blackoutPanel.setVisible(true);
                 settingsPanel.setVisible(true);
+                mainScreenImgContainer.setIcon(settingsPanelBG);
                 pauseMenuPanel.setVisible(false);
-                blackoutPanel.setVisible(false);
                 //revalidate();
                 //repaint();
             }
@@ -636,7 +668,7 @@ public class MainForm extends JFrame {
             }
         });
 
-        exitButton.addMouseListener(new MouseAdapter() {
+        exitPauseMenuButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
