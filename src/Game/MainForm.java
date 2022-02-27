@@ -1,6 +1,7 @@
 package Game;
 
 import Game.Creatures.Hero;
+import Game.Interface.JustPanel;
 import Game.Stuffs.Stuff;
 import Game.Stuffs.StuffSubs.Equipments.Weapon;
 import Game.Trees.Node;
@@ -38,6 +39,27 @@ public class MainForm extends JFrame {
 
 
     public MainForm(Hero hero) throws IOException {
+
+        final String ODD = "Нечётный";
+        final String EVEN = "Чётный";
+        String[] strings = new String[5];
+
+        //напишите тут ваш код
+        for (int i = 0; i < strings.length; i++) {
+            int index = i % 2;
+            strings[i] = i % 2 == 0 ? EVEN : ODD;
+        }
+
+        System.out.print("index = 0");
+        System.out.println(" value = " + strings[0]);
+        System.out.print("index = 1");
+        System.out.println(" value = " + strings[1]);
+        System.out.print("index = 2");
+        System.out.println(" value = " + strings[2]);
+        System.out.print("index = 3");
+        System.out.println(" value = " + strings[3]);
+        System.out.print("index = 4");
+        System.out.println(" value = " + strings[4]);
 
         setTitle("RPGTALE");
 
@@ -136,15 +158,19 @@ public class MainForm extends JFrame {
         blackoutPanel.setVisible(false);
         //settingsGroupButtonPanel.setVisible(false);
 
-        rootPanel.add(mainPanel, new Integer(5));
-        rootPanel.add(bgPanel, new Integer(1));
-        rootPanel.add(navbarPanel, new Integer(10));
-        rootPanel.add(pauseMenuPanel, new Integer(7));
-        rootPanel.add(characterPanel, new Integer(5));
-        rootPanel.add(questPanel, new Integer(5));
-        rootPanel.add(mapPanel, new Integer(5));
-        rootPanel.add(settingsPanel, new Integer(5));
-        rootPanel.add(blackoutPanel, new Integer(3));
+        JPanel JustPanel = new JustPanel();
+
+//        rootPanel.add(mainPanel, new Integer(5));
+  rootPanel.add(bgPanel, new Integer(1));
+//        rootPanel.add(navbarPanel, new Integer(10));
+//        rootPanel.add(pauseMenuPanel, new Integer(7));
+//        rootPanel.add(characterPanel, new Integer(5));
+//        rootPanel.add(questPanel, new Integer(5));
+//        rootPanel.add(mapPanel, new Integer(5));
+//        rootPanel.add(settingsPanel, new Integer(5));
+//        rootPanel.add(blackoutPanel, new Integer(3));
+
+        rootPanel.add(JustPanel, new Integer(199));
 
         /* Импорт изображений */
         ImageIcon mainScreenBG = new ImageIcon(ImageIO.read(new File("src/res/img/van.png")));
